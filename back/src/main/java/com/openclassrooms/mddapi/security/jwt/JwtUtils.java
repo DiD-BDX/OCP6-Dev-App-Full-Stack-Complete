@@ -41,7 +41,7 @@ public class JwtUtils {
         return Jwts.builder()
             .setSubject((userPrincipal.getUsername()))
             .setIssuedAt(new Date())
-            .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+            //.setExpiration(new Date((new Date()).getTime() + jwtExpirationMs)) // Le jeton JWT n'expire jamais
             .signWith(SignatureAlgorithm.HS512, jwtSecret)
             .compact();
     }

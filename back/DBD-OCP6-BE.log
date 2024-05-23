@@ -6727,3 +6727,7 @@ java.lang.NoSuchMethodError: 'void com.fasterxml.jackson.core.util.BufferRecycle
 2024-05-23 19:08:05.939  INFO 90840 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2024-05-23 19:08:05.940  INFO 90840 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
 2024-05-23 19:08:05.977 ERROR 90840 --- [http-nio-8080-exec-1] c.o.mddapi.security.jwt.JwtUtils         : JWT token is expired: JWT expired at 2022-08-30T17:54:51Z. Current time: 2024-05-23T19:08:05Z, a difference of 54609194977 milliseconds.  Allowed clock skew: 0 milliseconds.
+2024-05-23 19:12:40.674 ERROR 90840 --- [http-nio-8080-exec-4] c.o.m.security.jwt.AuthEntryPointJwt     : Unauthorized error: Bad credentials
+2024-05-23 19:21:02.904  INFO 90840 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-23 19:21:02.908  INFO 90840 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-05-23 19:21:02.919  INFO 90840 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
