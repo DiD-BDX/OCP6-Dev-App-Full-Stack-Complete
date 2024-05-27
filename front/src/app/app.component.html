@@ -1,1 +1,18 @@
-<router-outlet></router-outlet>
+<div class="app">
+    <div class="center">
+        <img src="/assets/logo_p6.png" alt="logo" />
+        <div *ngIf="$isLogged() | async; else notLogged">
+            <span routerLink="themes" class="link">Themes</span>
+            <span routerLink="me" class="link">Account</span>
+            <span (click)="logout()" class="link">Logout</span>
+        </div>
+        <ng-template #notLogged>
+        <div>
+            <button mat-raised-button color="primary" [routerLink]="'/login'">Se connecter</button>
+            <button mat-raised-button color="primary" [routerLink]="'/register'">S'inscrire</button>
+        </div>
+        </ng-template>
+    </div>
+    <router-outlet></router-outlet>
+</div>
+        
