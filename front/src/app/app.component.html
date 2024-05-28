@@ -1,3 +1,10 @@
+<mat-toolbar color="primary" *ngIf="!(isHomePage$ | async) || ($isLogged() | async)">
+    <span>MDD APP</span>
+    <span class="spacer"></span>
+    <a mat-button routerLink="/articles">Articles</a>
+    <a mat-button routerLink="/themes">Thèmes</a>
+    <mat-icon>account_circle</mat-icon>
+</mat-toolbar>
 <div class="app">
     <div class="center">
         <img src="/assets/logo_p6.png" alt="logo" />
@@ -7,7 +14,7 @@
             <button mat-raised-button color="primary" (click)="logout()" class="link">Se déconnecter</button>
         </div>
         <ng-template #notLogged>
-        <div>
+        <div class="button-container">
             <button mat-raised-button color="primary" [routerLink]="'/login'">Se connecter</button>
             <button mat-raised-button color="primary" [routerLink]="'/register'">S'inscrire</button>
         </div>
