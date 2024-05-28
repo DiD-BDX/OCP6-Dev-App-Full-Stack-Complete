@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { SessionService } from "../services/session.service";
+//import { SessionService } from "../services/session.service";
 import { Router } from "@angular/router";
 
 
@@ -8,14 +8,18 @@ export class AuthGuard  {
 
     constructor( 
         private router: Router,
-        private sessionService: SessionService,
+        //private sessionService: SessionService,
     ) {
     }
 
     public canActivate(): boolean {
-        if (!this.sessionService.isLogged) {
+        /* if (!this.sessionService.isLogged) {
         this.router.navigate(['login']);
-        return false;
+        return false; */
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+            this.router.navigate(['login']);
+            return false;
         }
         return true;
     }

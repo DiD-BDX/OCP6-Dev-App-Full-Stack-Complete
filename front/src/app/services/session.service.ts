@@ -18,12 +18,16 @@ export class SessionService {
   public logIn(user: SessionInformation): void {
     this.sessionInformation = user;
     this.isLogged = true;
+    // Stockez le token dans le stockage local
+    localStorage.setItem('authToken', user.token);
     this.next();
   }
 
   public logOut(): void {
     this.sessionInformation = undefined;
     this.isLogged = false;
+    // Supprimez le token du stockage local
+    localStorage.removeItem('authToken');
     this.next();
   }
 

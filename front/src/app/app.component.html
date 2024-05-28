@@ -2,9 +2,9 @@
     <div class="center">
         <img src="/assets/logo_p6.png" alt="logo" />
         <div *ngIf="$isLogged() | async; else notLogged">
-            <span routerLink="themes" class="link">Themes</span>
-            <span routerLink="me" class="link">Account</span>
-            <span (click)="logout()" class="link">Logout</span>
+            <!-- <span routerLink="themes" class="link">Themes</span>
+            <span routerLink="me" class="link">Account</span> -->
+            <button mat-raised-button color="primary" (click)="logout()" class="link">Se déconnecter</button>
         </div>
         <ng-template #notLogged>
         <div>
