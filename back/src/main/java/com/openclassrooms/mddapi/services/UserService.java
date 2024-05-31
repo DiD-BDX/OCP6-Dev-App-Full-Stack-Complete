@@ -29,7 +29,7 @@ public class UserService {
      * Trouve un utilisateur par son ID.
      *
      * @param id L'ID de l'utilisateur à trouver.
-     * @return L'utilisateur si trouvé, sinon null.
+     * @return {@link User} L'utilisateur si trouvé, sinon null.
      */
     public User findById(Long id) {
         return this.userRepository.findById(id).orElse(null);

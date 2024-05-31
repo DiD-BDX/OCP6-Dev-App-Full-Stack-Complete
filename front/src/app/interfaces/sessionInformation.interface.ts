@@ -2,5 +2,6 @@ export interface SessionInformation {
     token: string;
     type: string;
     id: number;
-    userName: string;
+    username: string;
+    email: string;
 }

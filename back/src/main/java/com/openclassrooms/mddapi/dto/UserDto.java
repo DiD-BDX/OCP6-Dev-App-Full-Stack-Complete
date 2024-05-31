@@ -40,7 +40,7 @@ public class UserDto {
      */
     @NonNull
     @Size(max = 50)
-    private String userName;
+    private String username;
 
     /**
      * Mot de passe de l'utilisateur.

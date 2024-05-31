@@ -1,4 +1,24 @@
-
-
-<p>me works!</p>
-
+<div class="container">
+    <div class="block1">
+        <form [formGroup]="profileForm" (ngSubmit)="save()" class="vertical-form">
+            <mat-form-field>
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="username">
+            </mat-form-field>
+            <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email">
+            </mat-form-field>
+            <div class="button-container">
+                <button mat-raised-button color="primary" type="submit">Sauvegarder</button>
+            </div>
+            <div class="logout-button-container" *ngIf="$isLogged() | async">
+                <!-- <button mat-raised-button color="primary" (click)="logout()" class="link logout-button">Se déconnecter</button> -->
+                <a href="" (click)="logout()" class="link logout-button">Se déconnecter</a>
+            </div>
+        </form>
+    </div>
+    <div class="block2">
+        <h1>Abonnements</h1>
+    </div>
+</div>

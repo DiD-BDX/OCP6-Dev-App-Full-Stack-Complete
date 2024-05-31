@@ -6,26 +6,37 @@ import { AuthGuard } from './guards/auth.guard';
 import { MeComponent } from './pages/me/me.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { LoginComponent } from './pages/auth/login/login.component';
+import { SessionResolver } from './services/session.resolver';
+import { AppComponent } from './app.component';
+import { RegisterComponent } from './pages/auth/register/register.component';
 
 const routes: Routes = [
- /*{
-    path: 'home',
-    redirectTo: '',
-    pathMatch: 'full'
-  },*/
   {
     path: '',
-    canActivate: [UnauthGuard],
-    loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule)
+    component: HomeComponent
   },
-/* {
-    path: 'themes',
-    canActivate: [AuthGuard],
-    loadChildren: () => import('./pages/themes/themes.module').then(m => m.ThemesModule)
-}, */
+  {
+    path: 'home',
+    canActivate: [UnauthGuard],
+    //loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule)
+    component: HomeComponent
+  },
+{
+    path: 'login',
+    canActivate: [UnauthGuard],
+    //loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule)
+    component: LoginComponent
+},
+{
+    path: 'register',
+    canActivate: [UnauthGuard],
+    //loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule)
+    component: RegisterComponent
+},
   {
     path: 'me',
     canActivate: [AuthGuard],
+    resolve: { isLogged: SessionResolver },
     component: MeComponent
   },
   { path: '404', component: NotFoundComponent },

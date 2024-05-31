@@ -53,7 +53,7 @@ public class User {
     @NonNull
     @Size(max = 50)
     @Column(name = "username")
-    private String userName;
+    private String username;
 
     /**
    * Mot de passe de l'utilisateur.

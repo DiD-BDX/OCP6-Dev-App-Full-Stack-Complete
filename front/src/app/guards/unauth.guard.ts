@@ -14,10 +14,13 @@ export class UnauthGuard  {
     }
 
     public canActivate(): boolean {
+        console.log('UnauthGuard#canActivate called');
         if (this.sessionService.isLogged) {
-        this.router.navigate(['themes']);
-        return false;
+            console.log('User is logged in, navigating to /me');
+            this.router.navigate(['me']);
+            return false;
         }
+        console.log('User is not logged in, access granted');
         return true;
     }
 }
