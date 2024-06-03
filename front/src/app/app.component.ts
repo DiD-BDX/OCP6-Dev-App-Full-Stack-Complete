@@ -3,6 +3,7 @@ import { AuthService } from './pages/auth/services/auth.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { SessionService } from './services/session.service';
 import { Observable, filter, map, startWith } from 'rxjs';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,7 @@ export class AppComponent {
 
   constructor(
     private authService: AuthService,
+    private location: Location,
     private router: Router,
     private sessionService: SessionService) {
       this.isHomePage$ = this.router.events.pipe(
@@ -29,5 +31,9 @@ export class AppComponent {
   public logout(): void {
     this.sessionService.logOut();
     this.router.navigate([''])
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 }

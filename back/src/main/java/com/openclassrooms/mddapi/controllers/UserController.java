@@ -1,10 +1,15 @@
 package com.openclassrooms.mddapi.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.openclassrooms.mddapi.mapper.UserMapper;
@@ -56,4 +61,31 @@ public class UserController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    /**
+ * Met à jour les informations d'un utilisateur authentifié.
+ *
+ * @param username Le nouveau nom d'utilisateur.
+ * @param email Le nouvel email.
+ * @return Une {@link ResponseEntity} contenant le DTO de l'utilisateur mis à jour si la mise à jour a réussi, sinon une réponse avec un statut 400.
+ */
+@PutMapping("/update")
+public ResponseEntity<?> updateAuthenticatedUser(@RequestBody User user) {
+    try {
+        // Récupérer l'utilisateur authentifié
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
+
+        // Mettre à jour l'utilisateur
+        User updatedUser = this.userService.updateUser(currentUsername, user.getUsername(), user.getEmail());
+
+        if (updatedUser == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok().body(this.userMapper.toDto(updatedUser));
+    } catch (Exception e) {
+        return ResponseEntity.badRequest().build();
+    }
+}
 }

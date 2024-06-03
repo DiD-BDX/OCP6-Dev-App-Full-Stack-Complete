@@ -36,7 +36,12 @@ export class LoginComponent {
   constructor(private authService: AuthService,
               private fb: FormBuilder,
               private router: Router,
-              private sessionService: SessionService) {}
+              private sessionService: SessionService) {
+                this.form = this.fb.group({
+                  email: ['', [Validators.required, this.emailOrUsername]],
+                  password: ['', Validators.required]
+                });
+              }
 
   public submit(): void {
     const loginRequest = this.form.value as LoginRequest;

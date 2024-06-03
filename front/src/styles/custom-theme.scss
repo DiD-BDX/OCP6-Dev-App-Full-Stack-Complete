@@ -10,10 +10,47 @@ $custom-theme: mat-light-theme($custom-primary, $custom-accent, $custom-warn);
 
 @include angular-material-theme($custom-theme);
 
-.mat-form-field-label {
+.mat-form-field {
+    width: 250px !important;
+    
+}
+
+.mat-form-field .mat-form-field-infix {
     font-size: 16px !important;
+    border: 1px solid black !important;
+    border-radius: 5px !important;
+    margin-bottom: 1em !important;
+    background-color: white !important;
+}
+
+.mat-form-field-underline {
+    display: none !important;
 }
 
 .mat-toolbar {
-    height: 100px !important;
+    height: 94px !important;
+    background-color:white !important;
+    border-bottom: 1px solid black !important;
+}
+.mat-card-title {
+    font-size: 24px !important;
+    margin-bottom: 2em !important;
+}
+
+.mat-card {
+    box-shadow: none !important;
+}
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-App mat-icon {
+    padding-top: 0.5em;
+    padding-left: 0.7em;
+    font-size: 36px;
+    height: 36px;
+    width: 40px !important;
+    transform: scaleX(1.5);
 }

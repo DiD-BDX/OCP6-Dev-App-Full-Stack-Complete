@@ -36,7 +36,19 @@ export class MeComponent implements OnInit {
     this.router.navigate([''])
   }
   save(): void {
-    // Mettre à jour les valeurs de username et email
-    console.log(this.profileForm.value);
+    const sessionInformation: SessionInformation = this.sessionService.getSessionInformation();
+    const updatedSessionInformation: SessionInformation = {
+      ...sessionInformation,
+      username: this.profileForm.value.username ?? '',
+      email: this.profileForm.value.email ?? ''
+    };
+    this.sessionService.updateSessionInformation(updatedSessionInformation).subscribe({
+      next: (updatedSessionInformation) => {
+        console.log('Session information updated', updatedSessionInformation);
+      },
+      error: (error) => {
+        console.error('Error updating session information', error);
+      }
+    });
   }
 }
