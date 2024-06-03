@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from './pages/auth/services/auth.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { SessionService } from './services/session.service';
-import { Observable, filter, map } from 'rxjs';
+import { Observable, filter, map, startWith } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +18,7 @@ export class AppComponent {
     private sessionService: SessionService) {
       this.isHomePage$ = this.router.events.pipe(
         filter(event => event instanceof NavigationEnd),
-        map(() => this.router.url === '/' || this.router.url === '/login' || this.router.url === '/register')
+        map(() => this.router.url === '/')
       );
   }
 

@@ -12,7 +12,7 @@ import com.openclassrooms.mddapi.repository.UserRepository;
 /**
  * Implémentation de {@link UserDetailsService} pour la sécurité de l'application.
  * <p>
- * Cette classe est utilisée par Spring Security pour charger les détails d'un utilisateur par son email.
+ * Cette classe est utilisée par Spring Security pour charger les détails d'un utilisateur par son email ou son nom d'utilisateur.
  * Elle implémente l'interface {@link UserDetailsService} qui est utilisée par Spring Security pour gérer les détails de l'utilisateur.
  * Elle contient une référence à un {@link UserRepository} pour interagir avec la base de données.
  */
@@ -30,17 +30,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     /**
-     * Charge un utilisateur par son email.
+     * Charge un utilisateur par son email ou son nom d'utilisateur.
      *
-     * @param email L'email de l'utilisateur à charger.
+     * @param usernameOrEmail L'email ou le nom d'utilisateur de l'utilisateur à charger.
      * @return Un objet {@link UserDetails} représentant l'utilisateur chargé.
-     * @throws UsernameNotFoundException si aucun utilisateur n'est trouvé avec l'email fourni.
+     * @throws UsernameNotFoundException si aucun utilisateur n'est trouvé avec l'email ou le nom d'utilisateur fourni.
      */
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email)
-            .orElseThrow(() -> new UsernameNotFoundException("User Not Found with email: " + email));
+    public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
+        User user = userRepository.findByEmailOrUsername(usernameOrEmail, usernameOrEmail)
+            .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username or email: " + usernameOrEmail));
 
         return UserDetailsImpl
                 .builder()
@@ -50,5 +50,4 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .password(user.getPassword())
                 .build();
     }
-
 }

@@ -3,6 +3,7 @@ package com.openclassrooms.mddapi.controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -65,14 +66,23 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
-        Authentication authentication = authenticationManager.authenticate(
+        // Tentez d'authentifier l'utilisateur avec l'email ou le nom d'utilisateur et le mot de passe fournis
+    Authentication authentication;
+    try {
+        // Essayez d'authentifier avec l'email
+        authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-
+    } catch (BadCredentialsException e) {
+        // Si l'authentification par email échoue, essayez avec le nom d'utilisateur
+        authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+    }
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        User user = this.userRepository.findByEmail(userDetails.getEmail()).orElse(null);
+        // Recherchez l'utilisateur par email ou nom d'utilisateur
+        User user = this.userRepository.findByEmailOrUsername(userDetails.getEmail(), userDetails.getUsername()).orElse(null);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
         }

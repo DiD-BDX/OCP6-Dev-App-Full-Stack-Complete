@@ -35,5 +35,4 @@ const materialModules = [
     ...materialModules
   ]
 })
-export class AuthModule { }
- */
+export class AuthModule { } */

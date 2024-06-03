@@ -14,11 +14,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { SessionService } from './services/session.service';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
+import { MatInputModule } from '@angular/material/input';
+import { CommonModule } from '@angular/common';
 
 const materialModule = [
   MatButtonModule,
@@ -26,6 +28,16 @@ const materialModule = [
   MatIconModule,
   MatSnackBarModule,
   MatToolbarModule,
+  MatFormFieldModule,
+  MatInputModule,
+  BrowserModule,
+  AppRoutingModule,
+  BrowserAnimationsModule,
+  FlexLayoutModule,
+  HttpClientModule,
+  ReactiveFormsModule,
+  CommonModule,
+  FormsModule,
 ]
 
 export function initializeApp(sessionService: SessionService) {
@@ -36,16 +48,7 @@ export function initializeApp(sessionService: SessionService) {
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, MeComponent, NotFoundComponent, LoginComponent, RegisterComponent],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    FlexLayoutModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    ...materialModule
-  ],
+  imports: materialModule,
   providers: [
     SessionService,
     {

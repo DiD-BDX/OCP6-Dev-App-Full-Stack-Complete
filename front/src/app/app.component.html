@@ -1,12 +1,16 @@
-<mat-toolbar color="primary" *ngIf="!(isHomePage$ | async) || ($isLogged() | async) else notLogged">
-    <span>MDD APP</span>
+<mat-toolbar color="white" *ngIf="!(isHomePage$ | async) && !($isLogged() | async) else notLogged">
+    <img src="/assets/logo_p6.png" alt="Logo de MDD APP" height="100" width="100">
     <span class="spacer"></span>
-    <a mat-button routerLink="/articles">Articles</a>
-    <a mat-button routerLink="/themes">Thèmes</a>
-    <mat-icon>account_circle</mat-icon>
 </mat-toolbar>
 <div>
     <ng-template #notLogged>
+       <mat-toolbar color="white" *ngIf="!(isHomePage$ | async) && ($isLogged() | async)">
+            <img src="/assets/logo_p6.png" alt="Logo de MDD APP" height="100" width="100">
+            <span class="spacer"></span>
+            <a mat-button routerLink="/articles">Articles</a>
+            <a mat-button routerLink="/themes">Thèmes</a>
+            <mat-icon>account_circle</mat-icon>
+        </mat-toolbar>
     </ng-template>
     <router-outlet></router-outlet>
 </div>

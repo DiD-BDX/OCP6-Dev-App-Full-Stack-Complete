@@ -13,24 +13,25 @@ import { RegisterComponent } from './pages/auth/register/register.component';
 const routes: Routes = [
   {
     path: '',
+    canActivate: [UnauthGuard],
+    //loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule)
+    resolve: { isLogged: SessionResolver },
     component: HomeComponent
   },
   {
     path: 'home',
     canActivate: [UnauthGuard],
-    //loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule)
+    resolve: { isLogged: SessionResolver },
     component: HomeComponent
   },
 {
     path: 'login',
     canActivate: [UnauthGuard],
-    //loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule)
     component: LoginComponent
 },
 {
     path: 'register',
     canActivate: [UnauthGuard],
-    //loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule)
     component: RegisterComponent
 },
   {

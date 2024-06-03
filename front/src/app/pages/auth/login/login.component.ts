@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { LoginRequest } from 'src/app/interfaces/loginRequest.interface';
 import { SessionInformation } from 'src/app/interfaces/sessionInformation.interface';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { SessionService } from 'src/app/services/session.service';
+import { Observable, filter, map } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,7 @@ export class LoginComponent {
       '',
       [
         Validators.required,
-        Validators.email
+        this.emailOrUsername
       ]
     ],
     password: [
@@ -35,8 +36,7 @@ export class LoginComponent {
   constructor(private authService: AuthService,
               private fb: FormBuilder,
               private router: Router,
-              private sessionService: SessionService) {
-  }
+              private sessionService: SessionService) {}
 
   public submit(): void {
     const loginRequest = this.form.value as LoginRequest;
@@ -47,5 +47,12 @@ export class LoginComponent {
       },
       error: error => this.onError = true,
     });
+  }
+
+  private emailOrUsername(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    const validEmail = Validators.email(control) === null;
+    const validUsername = value.trim().length > 3;
+    return validEmail || validUsername ? null : { 'emailOrUsername': true };
   }
 }
