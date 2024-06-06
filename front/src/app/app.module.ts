@@ -21,6 +21,7 @@ import { LoginComponent } from './pages/auth/login/login.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
+import { ThemesComponent } from './pages/themes/themes.component';
 
 const materialModule = [
   MatButtonModule,
@@ -47,7 +48,7 @@ export function initializeApp(sessionService: SessionService) {
 }
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, MeComponent, NotFoundComponent, LoginComponent, RegisterComponent],
+  declarations: [AppComponent, HomeComponent, MeComponent, NotFoundComponent, LoginComponent, RegisterComponent, ThemesComponent],
   imports: materialModule,
   providers: [
     SessionService,

@@ -7,12 +7,12 @@ import com.openclassrooms.mddapi.dto.SubscriptionsDto;
 import com.openclassrooms.mddapi.models.Subscriptions;
 
 /**
- * Mapper pour l'entité {@link Subscriptions} et son DTO {@link SubscriptionsDto}.
- * Ce mapper est un composant de Spring, il utilise MapStruct pour mapper l'entité et le DTO.
+ * Interface pour le mapper entre l'entité {@link Subscriptions} et son DTO {@link SubscriptionsDto}.
+ * Ce mapper est un composant de Spring et utilise MapStruct pour effectuer les conversions.
  */
 @Component
 @Mapper(componentModel = "spring")
-public interface SubscriptionsMapper extends EntityMapper<SubscriptionsDto, Subscriptions> {
+public interface SubscriptionsMapper {
 
     /**
      * Convertit l'entité {@link Subscriptions} en son DTO {@link SubscriptionsDto}.

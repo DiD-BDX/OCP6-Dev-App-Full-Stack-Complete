@@ -48,4 +48,9 @@ public class PostDto {
      * L'identifiant du sujet associé au post. Ce champ est utilisé pour lier le post à un sujet spécifique.
      */
     private Long topicId;
+
+    /**
+     * L'identifiant de l'utilisateur qui a créé le post. Ce champ est utilisé pour lier le post à l'utilisateur qui l'a créé.
+     */
+    private Long userId;
 }

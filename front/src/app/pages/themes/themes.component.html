@@ -1,0 +1,17 @@
+<div class="grid-container">   
+    <div class="Themes-content" fxLayout="row wrap" fxLayoutGap="20px" fxLayout.lt-sm="column">
+        <mat-card *ngFor="let topic of topics" fxFlex="47" class="lightGray-MarginTop card-positioning">
+            <mat-card-header>
+                <mat-card-title>{{ topic.name }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="content-positioning">
+                <p class="ellipsis">{{ topic.description }}</p>
+            </mat-card-content>
+            <mat-card-actions class="actions-positioning">
+                <div class="button-container">
+                    <button mat-raised-button color="primary" type="submit" (click)="subscribeToTopic(topic)">S'abonner</button>
+                </div>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div> 

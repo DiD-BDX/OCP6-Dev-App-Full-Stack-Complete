@@ -1,4 +1,4 @@
-.block1, .block2{
+.block1 {
     display: flex;
     justify-content: center;
     width: 100%;
@@ -14,16 +14,25 @@
     justify-content: center;
 }
 
-.button-container {
-    padding-top: 0em;
-}
-
 .link.logout-button {
     color: red;
     font-weight: bold;
     font-size: 16px;
     margin-top: 0.2em;
 }
+
 hr {
     width: 90%;
+}
+
+.block2 .Themes-content {
+    width: 92%;
+    justify-content: space-between;
+}
+
+.block2 .grid-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
 }

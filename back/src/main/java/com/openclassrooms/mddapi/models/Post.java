@@ -59,4 +59,14 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "topic_id", nullable = false)
     private Topic topic;
+
+    /**
+     * L'utilisateur qui a écrit le post.
+     * 
+     * @JoinColumn indique que la colonne 'user_id' dans la table 'POST' est une clé étrangère qui fait référence à la colonne 'id' de la table 'USER'.
+     * 'nullable = false' signifie que chaque post doit avoir un utilisateur associé ; il ne peut pas être null.
+     */
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

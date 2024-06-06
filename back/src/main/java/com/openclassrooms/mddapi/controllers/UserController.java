@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.openclassrooms.mddapi.mapper.UserMapper;
@@ -63,12 +62,11 @@ public class UserController {
     }
 
     /**
- * Met à jour les informations d'un utilisateur authentifié.
- *
- * @param username Le nouveau nom d'utilisateur.
- * @param email Le nouvel email.
- * @return Une {@link ResponseEntity} contenant le DTO de l'utilisateur mis à jour si la mise à jour a réussi, sinon une réponse avec un statut 400.
- */
+     * Met à jour l'utilisateur authentifié.
+     *
+     * @param user L'utilisateur avec les nouvelles informations.
+     * @return Une {@link ResponseEntity} contenant le DTO de l'utilisateur mis à jour si réussi, sinon une réponse avec un statut 400.
+     */
 @PutMapping("/update")
 public ResponseEntity<?> updateAuthenticatedUser(@RequestBody User user) {
     try {

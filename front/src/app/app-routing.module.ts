@@ -9,6 +9,7 @@ import { LoginComponent } from './pages/auth/login/login.component';
 import { SessionResolver } from './services/session.resolver';
 import { AppComponent } from './app.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
+import { ThemesComponent } from './pages/themes/themes.component';
 
 const routes: Routes = [
   {
@@ -40,8 +41,13 @@ const routes: Routes = [
     resolve: { isLogged: SessionResolver },
     component: MeComponent
   },
-  { path: '404', component: NotFoundComponent },
-  { path: '**', redirectTo: '404' }
+{
+    path: 'themes',
+    canActivate: [AuthGuard],
+    component: ThemesComponent
+},
+{ path: '404', component: NotFoundComponent },
+{ path: '**', redirectTo: '404' }
 ];
 
 @NgModule({
