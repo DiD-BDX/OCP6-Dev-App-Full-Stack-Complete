@@ -32,4 +32,6 @@ public class SubscriptionsDto {
      * La date à laquelle l'utilisateur a souscrit.
      */
     private Date subscribedAt;
+    private String topicName;
+    private String topicDescription;
 }

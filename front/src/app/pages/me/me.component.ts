@@ -45,8 +45,13 @@ export class MeComponent implements OnInit {
     this.updateSessionInformation();
   }
 
-  unsubscribeFromTopic(topic: Topic) {
-    this.unsubscribeUserFromTopic(topic);
+  unsubscribeFromTopic(topicId: Number) {
+    const topic = this.topics.find(topic => topic.id === topicId);
+    if (topic) {
+      this.unsubscribeUserFromTopic(topic);
+    } else {
+      console.error('--------------Topic not found');
+    }
   }
 
   private createProfileForm(): FormGroup {
@@ -78,6 +83,7 @@ export class MeComponent implements OnInit {
   private getSubscribedTopics(): void {
     this.subscriptionService.getSubscribedTopics(this.userId).subscribe((subscriptions: SubscriptionInformation[]) => {
       this.subscribedTopics = subscriptions;
+      console.log('-----------Subscribed topics', subscriptions);
     });
   }
 
@@ -95,10 +101,26 @@ export class MeComponent implements OnInit {
     this.subscriptionService.unsubscribeUserFromTopic(topic.id, this.userId).subscribe(this.handleUnsubscribeUserFromTopicResponse(topic));
   }
 
+  private handleUnsubscribeUserFromTopicResponse(topic: Topic): any {
+    return {
+      next: (response: { message: string }) => {
+        console.log('--------Désinscription réussie' + response);
+        const index = this.subscribedTopics.findIndex(subscription => subscription.topicId === topic.id);
+        if (index !== -1) {
+          this.subscribedTopics.splice(index, 1);
+        }
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error('Erreur lors de la désinscription du topic :', error);
+      }
+    };
+  }
+
   private handleTopicsResponse(): any {
     return {
       next: (data: Topic[])=> {
         this.topics = data;
+        console.log('Topics récupérés', data);
       },
       error: (error: HttpErrorResponse) => {
         console.error('Erreur lors de la récupération des topics :', error);
@@ -116,19 +138,4 @@ export class MeComponent implements OnInit {
       }
     };
   }
-
-  private handleUnsubscribeUserFromTopicResponse(topic: Topic): any {
-    return {
-      next: (response: { message: string }) => {
-        console.log('Désinscription réussie' + response);
-        const index = this.subscribedTopics.findIndex(subscription => subscription.topic.id === topic.id);
-        if (index !== -1) {
-          this.subscribedTopics.splice(index, 1);
-        }
-      },
-      error: (error: HttpErrorResponse) => {
-        console.error('Erreur lors de la désinscription du topic :', error);
-      }
-    };
-}
 }

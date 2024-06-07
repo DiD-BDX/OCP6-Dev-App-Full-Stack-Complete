@@ -21,6 +21,8 @@ public interface SubscriptionsMapper {
      */
     @Mapping(source = "user.id", target = "userId")
     @Mapping(source = "topic.id", target = "topicId")
+    @Mapping(source = "topic.name", target = "topicName")
+    @Mapping(source = "topic.description", target = "topicDescription")
     SubscriptionsDto toDto(Subscriptions subscriptions);
 
     /**

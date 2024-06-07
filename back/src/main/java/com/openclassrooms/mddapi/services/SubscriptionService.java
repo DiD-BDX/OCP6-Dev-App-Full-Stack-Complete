@@ -1,5 +1,7 @@
 package com.openclassrooms.mddapi.services;
 
+import com.openclassrooms.mddapi.dto.SubscriptionsDto;
+import com.openclassrooms.mddapi.mapper.SubscriptionsMapper;
 import com.openclassrooms.mddapi.models.Subscriptions;
 import com.openclassrooms.mddapi.models.User;
 import com.openclassrooms.mddapi.models.Topic;
@@ -26,7 +28,14 @@ public class SubscriptionService {
         @Autowired
         private TopicRepository topicRepository;
 
-        public Subscriptions subscribeUserToTopic(Long userId, Long topicId) {
+        @Autowired
+        private SubscriptionsMapper subscriptionsMapper;
+
+        public SubscriptionsDto toDto(Subscriptions subscription) {
+                return subscriptionsMapper.toDto(subscription);
+        }
+
+        public SubscriptionsDto subscribeUserToTopic(Long userId, Long topicId) {
                 User user = userRepository.findById(userId)
                         .orElseThrow(() -> {
                         return new IllegalArgumentException("Invalid user Id:" + userId);
@@ -47,7 +56,7 @@ public class SubscriptionService {
                         .setTopic(topic)
                         .setSubscribedAt(new Date());
                 Subscriptions savedSubscription = subscriptionRepository.save(subscription);
-                return savedSubscription;
+                return subscriptionsMapper.toDto(savedSubscription);
         }
 
         public void unsubscribeUserFromTopic(Long userId, Long topicId) {
