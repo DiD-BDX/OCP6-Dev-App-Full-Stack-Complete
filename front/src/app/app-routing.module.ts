@@ -10,6 +10,7 @@ import { SessionResolver } from './services/session.resolver';
 import { AppComponent } from './app.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { ThemesComponent } from './pages/themes/themes.component';
+import { ArticlesComponent } from './pages/articles/articles.component';
 
 const routes: Routes = [
   {
@@ -46,6 +47,12 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     component: ThemesComponent
 },
+{
+  path: 'articles',
+  canActivate: [AuthGuard],
+  component: ArticlesComponent
+},
+
 { path: '404', component: NotFoundComponent },
 { path: '**', redirectTo: '404' }
 ];

@@ -37,7 +37,7 @@ public class SubscriptionService {
                         });
 
                 // Vérifie si l'utilisateur est déjà abonné à ce sujet
-                boolean isAlreadySubscribed = subscriptionRepository.findByUserAndTopic(user, topic).isPresent();
+                boolean isAlreadySubscribed = subscriptionRepository.findByUserIdAndTopicId(user.getId(), topic.getId()).isPresent();
                 if (isAlreadySubscribed) {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "User is already subscribed to this topic");
                 }
@@ -57,15 +57,16 @@ public class SubscriptionService {
                         .orElseThrow(() -> new IllegalArgumentException("Invalid topic Id:" + topicId));
 
                 // Trouver l'abonnement de l'utilisateur à ce sujet
-                Subscriptions subscription = subscriptionRepository.findByUserAndTopic(user, topic)
+                Subscriptions subscription = subscriptionRepository.findByUserIdAndTopicId(user.getId(), topic.getId())
                         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Subscription not found"));
 
                 // Supprimer l'abonnement
                 subscriptionRepository.delete(subscription);
         }
         public List<Subscriptions> getSubscriptionsByUserId(Long userId) {
-                User user = userRepository.findById(userId)
-                        .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + userId));
-                return subscriptionRepository.findByUser(user);
+                if (!userRepository.existsById(userId)) {
+                        throw new IllegalArgumentException("Invalid user Id:" + userId);
+                }
+                return subscriptionRepository.findByUserId(userId);
         }
 }
