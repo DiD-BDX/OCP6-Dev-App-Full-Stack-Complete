@@ -11,6 +11,7 @@ import { SessionService } from 'src/app/services/session.service';
 export class ArticlesComponent implements OnInit {
   articles: PostInformation[] = [];
   username: string = '';
+  sortDirection: string = 'desc';
 
   constructor(private postService: PostService, private sessionService: SessionService) { }
 
@@ -26,11 +27,17 @@ export class ArticlesComponent implements OnInit {
       .subscribe(articles => this.articles = articles);
   }
 
-  sortArticles(order: string): void {
-    if (order === 'desc') {
-      this.articles.sort((a, b) => (a.createdAt < b.createdAt) ? 1 : -1);
-    } else {
-      this.articles.sort((a, b) => (a.createdAt > b.createdAt) ? 1 : -1);
+  sortArticles(order: string, event: Event): void {
+    event.preventDefault();
+    
+    if (order === 'date') {
+      if (this.sortDirection === 'asc') {
+        this.articles.sort((a, b) => (a.createdAt < b.createdAt) ? 1 : -1);
+        this.sortDirection = 'desc';
+      } else {
+        this.articles.sort((a, b) => (a.createdAt > b.createdAt) ? 1 : -1);
+        this.sortDirection = 'asc';
+      }
     }
   }
 }

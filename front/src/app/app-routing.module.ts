@@ -12,6 +12,7 @@ import { RegisterComponent } from './pages/auth/register/register.component';
 import { ThemesComponent } from './pages/themes/themes.component';
 import { ArticlesComponent } from './pages/articles/articles.component';
 import { CreationArticleComponent } from './pages/creation-article/creation-article.component';
+import { ArticlesDetailComponent } from './pages/articles-detail/articles-detail.component';
 
 const routes: Routes = [
   {
@@ -58,6 +59,12 @@ const routes: Routes = [
   path: 'creation-article',
   canActivate: [AuthGuard],
   component: CreationArticleComponent
+},
+
+{
+  path:'article/:id',
+  canActivate: [AuthGuard],
+  component: ArticlesDetailComponent
 },
 
 { path: '404', component: NotFoundComponent },

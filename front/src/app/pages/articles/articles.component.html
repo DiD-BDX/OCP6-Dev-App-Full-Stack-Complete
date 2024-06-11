@@ -2,9 +2,10 @@
         
     <mat-card-header class="header-container">
         <button mat-raised-button color="primary" class="left-button" routerLink="/creation-article">Créer un article</button>
-        <a href="#" class="right-link" (click)="sortArticles('desc')">
-            Trier par
-            <mat-icon aria-hidden="false" aria-label="Icone de flèche vers le bas">arrow_downward</mat-icon>
+        <a class="right-link" (click)="sortArticles('date', $event)">
+            Trier par date
+            <mat-icon *ngIf="sortDirection === 'asc'" aria-hidden="false" aria-label="Icone de flèche vers le haut">arrow_upward</mat-icon>
+            <mat-icon *ngIf="sortDirection === 'desc'" aria-hidden="false" aria-label="Icone de flèche vers le bas">arrow_downward</mat-icon>
         </a>
     </mat-card-header>
     
@@ -23,7 +24,7 @@
                 </mat-card-content>
                 <mat-card-actions class="actions-positioning">
                     <div class="button-container">
-                        <button mat-raised-button color="primary" type="submit">Lire l'article</button>
+                        <button mat-raised-button color="primary" [routerLink]="['/article', article.id]">Lire l'article</button>
                     </div>
                 </mat-card-actions>
             </mat-card>

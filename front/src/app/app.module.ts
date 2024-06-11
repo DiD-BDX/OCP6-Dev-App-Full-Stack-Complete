@@ -25,6 +25,7 @@ import { CommonModule } from '@angular/common';
 import { ThemesComponent } from './pages/themes/themes.component';
 import { ArticlesComponent } from './pages/articles/articles.component';
 import { CreationArticleComponent } from './pages/creation-article/creation-article.component';
+import { ArticlesDetailComponent } from './pages/articles-detail/articles-detail.component';
 
 const materialModule = [
   MatButtonModule,
@@ -52,7 +53,7 @@ export function initializeApp(sessionService: SessionService) {
 }
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, MeComponent, NotFoundComponent, LoginComponent, RegisterComponent, ThemesComponent, ArticlesComponent, CreationArticleComponent],
+  declarations: [AppComponent, HomeComponent, MeComponent, NotFoundComponent, LoginComponent, RegisterComponent, ThemesComponent, ArticlesComponent, CreationArticleComponent, ArticlesDetailComponent],
   imports: materialModule,
   providers: [
     SessionService,
