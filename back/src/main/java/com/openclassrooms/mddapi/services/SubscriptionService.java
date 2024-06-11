@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SubscriptionService {
@@ -72,10 +73,18 @@ public class SubscriptionService {
                 // Supprimer l'abonnement
                 subscriptionRepository.delete(subscription);
         }
-        public List<Subscriptions> getSubscriptionsByUserId(Long userId) {
+        /* public List<Subscriptions> getSubscriptionsByUserId(Long userId) {
                 if (!userRepository.existsById(userId)) {
                         throw new IllegalArgumentException("Invalid user Id:" + userId);
                 }
                 return subscriptionRepository.findByUserId(userId);
-        }
+        } */
+
+        public List<SubscriptionsDto> getSubscriptionsByUserId(Long userId) {
+                if (!userRepository.existsById(userId)) {
+                        throw new IllegalArgumentException("Invalid user Id:" + userId);
+                }
+                List<Subscriptions> subscriptions = subscriptionRepository.findByUserId(userId);
+                return subscriptions.stream().map(subscriptionsMapper::toDto).collect(Collectors.toList());
+                }
 }

@@ -2,8 +2,6 @@ package com.openclassrooms.mddapi.mapper;
 
 import org.springframework.stereotype.Component;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 
 import com.openclassrooms.mddapi.dto.PostDto;
 import com.openclassrooms.mddapi.models.Post;
@@ -22,15 +20,6 @@ import com.openclassrooms.mddapi.models.Post;
 @Component
 @Mapper(componentModel = "spring")
 public interface PostMapper extends EntityMapper<PostDto, Post> {
-    @Mappings({
-        @Mapping(source = "topic.id", target = "topicId"),
-        @Mapping(source = "user.id", target = "userId")
-    })
     PostDto toDto(Post post);
-
-    @Mappings({
-        @Mapping(source = "topicId", target = "topic.id"),
-        @Mapping(source = "userId", target = "user.id")
-    })
     Post toEntity(PostDto postDto);
 }

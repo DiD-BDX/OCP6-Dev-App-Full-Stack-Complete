@@ -1,7 +1,6 @@
 package com.openclassrooms.mddapi.controllers;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,18 +40,15 @@ public class SubscriptionController {
     }
 
     /* @GetMapping("/{userId}/subscriptions")
-    public List<Subscriptions> getSubscriptionsByUserId(@PathVariable Long userId) {
-        List<Subscriptions> subscriptions = subscriptionService.getSubscriptionsByUserId(userId);
-        System.out.println(subscriptions);
-        return subscriptions;
-    } */
-
-    @GetMapping("/{userId}/subscriptions")
     public List<SubscriptionsDto> getSubscriptionsByUserId(@PathVariable Long userId) {
         List<SubscriptionsDto> subscriptions = subscriptionService.getSubscriptionsByUserId(userId).stream()
             .map(subscription -> subscriptionService.toDto(subscription))
             .collect(Collectors.toList());
         System.out.println(subscriptions);
         return subscriptions;
+    } */
+    @GetMapping("/{userId}/subscriptions")
+    public List<SubscriptionsDto> getSubscriptionsByUserId(@PathVariable Long userId) {
+        return subscriptionService.getSubscriptionsByUserId(userId);
     }
 }

@@ -30,13 +30,13 @@ public class Post {
     /**
      * Le titre du post. Ce champ est obligatoire et limité à 100 caractères.
      */
-    @Column(name = "title", nullable = false, length = 100)
+    @Column(name = "title", nullable = false, length = 255)
     private String title;
 
     /**
      * Le contenu du post. Ce champ est obligatoire.
      */
-    @Column(name = "content", nullable = false)
+    @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
     /**
@@ -56,9 +56,8 @@ public class Post {
     /**
      * Le sujet associé au post.
      */
-    @ManyToOne
-    @JoinColumn(name = "topic_id", nullable = false)
-    private Topic topic;
+    @Column(name = "topic_id", nullable = false)
+    private Long topicId;
 
     /**
      * L'utilisateur qui a écrit le post.
@@ -66,7 +65,6 @@ public class Post {
      * @JoinColumn indique que la colonne 'user_id' dans la table 'POST' est une clé étrangère qui fait référence à la colonne 'id' de la table 'USER'.
      * 'nullable = false' signifie que chaque post doit avoir un utilisateur associé ; il ne peut pas être null.
      */
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 }

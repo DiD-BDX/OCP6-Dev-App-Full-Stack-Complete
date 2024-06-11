@@ -5,6 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
+import { MatSelectModule } from '@angular/material/select';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
 import { MeComponent } from './pages/me/me.component';
@@ -23,6 +24,7 @@ import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { ThemesComponent } from './pages/themes/themes.component';
 import { ArticlesComponent } from './pages/articles/articles.component';
+import { CreationArticleComponent } from './pages/creation-article/creation-article.component';
 
 const materialModule = [
   MatButtonModule,
@@ -32,6 +34,7 @@ const materialModule = [
   MatToolbarModule,
   MatFormFieldModule,
   MatInputModule,
+  MatSelectModule,
   BrowserModule,
   AppRoutingModule,
   BrowserAnimationsModule,
@@ -49,7 +52,7 @@ export function initializeApp(sessionService: SessionService) {
 }
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, MeComponent, NotFoundComponent, LoginComponent, RegisterComponent, ThemesComponent, ArticlesComponent],
+  declarations: [AppComponent, HomeComponent, MeComponent, NotFoundComponent, LoginComponent, RegisterComponent, ThemesComponent, ArticlesComponent, CreationArticleComponent],
   imports: materialModule,
   providers: [
     SessionService,

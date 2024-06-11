@@ -5,7 +5,6 @@ import { LoginRequest } from 'src/app/interfaces/loginRequest.interface';
 import { SessionInformation } from 'src/app/interfaces/sessionInformation.interface';
 import { NavigationEnd, Router } from '@angular/router';
 import { SessionService } from 'src/app/services/session.service';
-import { Observable, filter, map } from 'rxjs';
 
 @Component({
   selector: 'app-login',

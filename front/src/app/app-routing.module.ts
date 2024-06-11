@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { ThemesComponent } from './pages/themes/themes.component';
 import { ArticlesComponent } from './pages/articles/articles.component';
+import { CreationArticleComponent } from './pages/creation-article/creation-article.component';
 
 const routes: Routes = [
   {
@@ -51,6 +52,12 @@ const routes: Routes = [
   path: 'articles',
   canActivate: [AuthGuard],
   component: ArticlesComponent
+},
+
+{
+  path: 'creation-article',
+  canActivate: [AuthGuard],
+  component: CreationArticleComponent
 },
 
 { path: '404', component: NotFoundComponent },

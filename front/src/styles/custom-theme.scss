@@ -8,19 +8,39 @@ $custom-warn:    mat-palette($mat-red);
 $custom-theme: mat-light-theme($custom-primary, $custom-accent, $custom-warn);
 @include angular-material-theme($custom-theme);
 
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    display: flex;
+    flex-direction: column;
+}
 // Form field styles
 .mat-form-field {
     width: 250px !important;
     .mat-form-field-infix {
         font-size: 16px !important;
-        border: 1px solid black !important;
+        border: 1px solid black;
         border-radius: 5px !important;
-        margin-bottom: 1em !important;
+        padding-top: 17px;
+        padding-left: 5px;
         background-color: white !important;
+        
+
+        select , input {
+            font-size: 16px !important;
+            background-color: white !important;
+            color: #757575;
+        }
+
+        input {
+            padding-left: 5px;
+        }
+
     }
     .mat-form-field-underline {
         display: none !important;
     }
+    
 }
 
 // Toolbar styles
@@ -28,6 +48,13 @@ $custom-theme: mat-light-theme($custom-primary, $custom-accent, $custom-warn);
     height: 94px !important;
     background-color:white !important;
     border-bottom: 1px solid black !important;
+    padding-right: 2em !important;
+    padding-left: 2em !important;
+}
+.mat-toolbar .mat-icon {
+    font-size: 40px;
+    height: 40px;
+    width: 40px;
 }
 
 // Card styles
@@ -47,7 +74,7 @@ $custom-theme: mat-light-theme($custom-primary, $custom-accent, $custom-warn);
 }
 
 // Header styles
-.header-App mat-icon {
+.app-not-logged mat-icon {
     padding-top: 0.5em;
     padding-left: 0.7em;
     font-size: 36px;
@@ -58,18 +85,17 @@ $custom-theme: mat-light-theme($custom-primary, $custom-accent, $custom-warn);
 
 // Themes content styles
 .Themes-content {
-    display: flex;
-    flex-wrap: wrap;
-    width: 92%;
-    justify-content: space-between;
-    height: 100%;
+    width: 100%;
+    justify-content: center !important;
 }
 
 // Grid container styles
 .grid-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    justify-items: center;
+    
+    margin-left: 1em;
+    
 }
 
 // Ellipsis styles
@@ -96,13 +122,14 @@ $custom-theme: mat-light-theme($custom-primary, $custom-accent, $custom-warn);
 .card-positioning {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    //height: 100%;
 }
 
 // Content positioning styles
 .content-positioning {
     flex-grow: 1;
     min-height: 4.5em;
+    margin-left: 1em;
 }
 
 // Actions positioning styles
@@ -110,3 +137,4 @@ $custom-theme: mat-light-theme($custom-primary, $custom-accent, $custom-warn);
     width: 100%;
     height: 40px;
 }
+
