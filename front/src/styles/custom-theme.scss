@@ -86,7 +86,10 @@ body {
 // Themes content styles
 .Themes-content {
     width: 100%;
-    justify-content: center !important;
+    //justify-content: center !important;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
 }
 
 // Grid container styles
@@ -94,7 +97,7 @@ body {
     display: grid;
     justify-items: center;
     
-    margin-left: 1em;
+    margin-left: 3em;
     
 }
 

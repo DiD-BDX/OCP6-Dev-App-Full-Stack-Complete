@@ -1,10 +1,24 @@
 .info-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: left;
 }
 
 .grid-container {
-    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
     margin-bottom: 2em;
+}
+
+
+.card-positioning {
+    background-color: white;
     
+}
+
+.info-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 5em;
 }

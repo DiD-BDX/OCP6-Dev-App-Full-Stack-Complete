@@ -1,11 +1,12 @@
 <div class="ArticlesDetailContainer">
         
     <mat-card-header class="header-container">
-        <mat-icon (click)="goBack()">arrow_back</mat-icon>
+        
     </mat-card-header>
     
-    <div class="grid-container">   
-        <mat-card *ngIf="article" fxFlex="47" class="lightGray-MarginTop card-positioning">
+    <div class="grid-container">
+        <mat-icon (click)="goBack()">arrow_back</mat-icon>   
+        <mat-card *ngIf="article" fxFlex="90" class="lightGray-MarginTop card-positioning">
             <mat-card-header>
                 <mat-card-title>{{ article.title }}</mat-card-title>    
             </mat-card-header>
@@ -13,6 +14,7 @@
                 <div class="info-container">
                     <h3 class="date-article">Date: {{ article.createdAt | date:'dd/MM/yyyy' }}</h3>
                     <h3 class="author-article">Auteur: {{ username }}</h3>
+                    <h3 class="theme-article">Thème: {{ topicName }}</h3>
                 </div>
                 <p class="content-article">{{article.content}}</p>
             </mat-card-content>
