@@ -6,6 +6,8 @@ import { PostInformation } from 'src/app/interfaces/postInformation.interface';
 import { SessionService } from 'src/app/services/session.service';
 import { SubscriptionInformation } from 'src/app/interfaces/subscriptionInformation.interface';
 import { SubscriptionService } from 'src/app/services/subscription.service';
+import { CommentInformation } from 'src/app/interfaces/commentInformation.interface';
+import { CommentService } from 'src/app/services/comment.service';
 
 @Component({
   selector: 'app-articles-detail',
@@ -17,12 +19,16 @@ export class ArticlesDetailComponent implements OnInit {
   article: PostInformation | null;
   username: string = '';
   topicName: string = '';
+  comments: CommentInformation[] = [];
+  commentUsername: string = '';
+  commentContent: string = '';
 
   constructor(
     private route: ActivatedRoute, 
     private location: Location,
     private sessionService: SessionService,
     private subscriptionService: SubscriptionService,
+    private commentService: CommentService,
     private postService: PostService
   ) {
     this.id = '';
@@ -33,6 +39,9 @@ export class ArticlesDetailComponent implements OnInit {
     this.id = this.route.snapshot.paramMap.get('id');
     this.getArticleById();
     this.username = this.sessionService.getSessionInformation().username;
+    if (this.id) {
+      this.getCommentsByPostId(+this.id);
+    }
   }
 
   getArticleById(): void {
@@ -53,6 +62,33 @@ export class ArticlesDetailComponent implements OnInit {
           }
         });
     }
+  }
+
+  getCommentsByPostId(postId: number): void {
+    this.commentService.getCommentsByPostId(postId)
+      .subscribe((comments: CommentInformation[]) => {
+        this.comments = comments;
+      });
+  }
+
+  addComment(): void {
+    const userId = this.sessionService.getSessionInformation().id;
+    const postId = +this.id!;
+    const comment: CommentInformation = {
+      userId: userId,
+      postId: postId,
+      commentUsername: this.commentUsername,
+      content: this.commentContent,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+
+    this.commentService.createComment(postId, comment)
+      .subscribe((comment: CommentInformation) => {
+        this.comments.push(comment);
+        this.commentUsername = '';
+        this.commentContent = '';
+      });
   }
 
   goBack(): void {

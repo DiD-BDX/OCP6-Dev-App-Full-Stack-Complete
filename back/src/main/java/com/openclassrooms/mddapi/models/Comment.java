@@ -24,7 +24,7 @@ public class Comment {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     /**
      * Le contenu du commentaire.
@@ -45,7 +45,7 @@ public class Comment {
      * @JoinColumn indique que la colonne 'user_id' dans la table 'COMMENT' est une clé étrangère qui fait référence à la colonne 'id' de la table 'USER'.
      * 'nullable = false' signifie que chaque commentaire doit avoir un utilisateur associé ; il ne peut pas être null.
      */
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
@@ -55,7 +55,7 @@ public class Comment {
      * @JoinColumn indique que la colonne 'post_id' dans la table 'COMMENT' est une clé étrangère qui fait référence à la colonne 'id' de la table 'POST'.
      * 'nullable = false' signifie que chaque commentaire doit être associé à un post ; il ne peut pas être null.
      */
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 }

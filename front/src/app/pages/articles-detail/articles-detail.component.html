@@ -1,25 +1,58 @@
-<div class="ArticlesDetailContainer">
-        
-    <mat-card-header class="header-container">
-        
-    </mat-card-header>
-    
-    <div class="grid-container">
-        <mat-icon (click)="goBack()">arrow_back</mat-icon>   
-        <mat-card *ngIf="article" fxFlex="90" class="lightGray-MarginTop card-positioning">
-            <mat-card-header>
-                <mat-card-title>{{ article.title }}</mat-card-title>    
-            </mat-card-header>
-            <mat-card-content class="content-positioning">
-                <div class="info-container">
-                    <h3 class="date-article">Date: {{ article.createdAt | date:'dd/MM/yyyy' }}</h3>
-                    <h3 class="author-article">Auteur: {{ username }}</h3>
-                    <h3 class="theme-article">Thème: {{ topicName }}</h3>
-                </div>
-                <p class="content-article">{{article.content}}</p>
-            </mat-card-content>
-        </mat-card>
-        
+<div class="full-page">
+    <div class="icon-left">
+        <mat-icon (click)="goBack()">arrow_back</mat-icon>
     </div>
-    <hr>
+    <div class="ArticlesDetailContainer">
+            
+        <mat-card-header class="header-container">
+            
+        </mat-card-header>
+        
+        <div class="grid-container">
+            
+            <mat-card *ngIf="article" fxFlex="90" class="lightGray-MarginTop card-positioning">
+                <mat-card-header>
+                    <mat-card-title>{{ article.title }}</mat-card-title>    
+                </mat-card-header>
+                <mat-card-content class="content-positioning">
+                    <div class="info-container">
+                        <h3 class="date-article">Date: {{ article.createdAt | date:'dd/MM/yyyy' }}</h3>
+                        <h3 class="author-article">Auteur: {{ username }}</h3>
+                        <h3 class="theme-article">Thème: {{ topicName }}</h3>
+                    </div>
+                    <p class="content-article">{{article.content}}</p>
+                </mat-card-content>
+            </mat-card>
+            
+        </div>
+        <hr>
+        <div class="comment-blocks">
+            <mat-card-header class="left-align">
+                <h2 class="title">Commentaires</h2>
+            </mat-card-header>
+            <mat-card *ngFor="let comment of comments" class="comment-block-1">
+                <mat-card-header class="comment-block-1-title">
+                    <mat-card-title>Par: {{ comment.commentUsername }}</mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="comment-block-1-content lightGray-MarginTop">
+                    <p>{{ comment.content }}</p>
+                </mat-card-content>
+            </mat-card>
+            <div class="comment-separator"></div>
+            <mat-card class="comment-block-2">
+                    <mat-card-header class="comment-block-2-title">
+                    </mat-card-header>
+                    <mat-card-content class="comment-block-2-content">
+                        <div class="comment-form-container">
+                            <mat-form-field class="comment-form">
+                                <textarea matInput placeholder="Commentaire" [(ngModel)]="commentContent"></textarea>
+                            </mat-form-field>
+                            <mat-card-actions class="comment-block-2-button">
+                                <mat-icon class="rotated-icon" mat-raised-button color="primary" (click)="addComment()">send</mat-icon>
+                            </mat-card-actions>
+                        </div>
+                    </mat-card-content>                          
+            </mat-card>
+        </div>
+    </div>
 </div>

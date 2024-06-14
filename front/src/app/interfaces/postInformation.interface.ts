@@ -6,4 +6,4 @@ export interface PostInformation {
     updatedAt: Date;
     userId: number;
     topicId: number;
-    }
+}

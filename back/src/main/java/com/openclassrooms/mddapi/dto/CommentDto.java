@@ -17,7 +17,7 @@ public class CommentDto {
     /**
      * L'identifiant unique du commentaire.
      */
-    private int id;
+    private Long id;
 
     /**
      * Le contenu du commentaire.
@@ -32,10 +32,12 @@ public class CommentDto {
     /**
      * L'identifiant de l'utilisateur qui a écrit le commentaire.
      */
-    private int userId;
+    private Long userId;
+
+    private String commentUsername;
 
     /**
      * L'identifiant du post qui a été commenté.
      */
-    private int postId;
+    private Long postId;
 }
