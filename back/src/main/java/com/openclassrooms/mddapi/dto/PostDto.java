@@ -1,6 +1,7 @@
 package com.openclassrooms.mddapi.dto;
 
 import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.util.Date;
 
@@ -11,9 +12,10 @@ import jakarta.validation.constraints.Max;
  * Cette classe est une représentation simplifiée de l'entité Post, utilisée pour exposer uniquement les données nécessaires.
  */
 @Data
+@Accessors(chain = true)
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class PostDto {
 
     /**
@@ -53,4 +55,6 @@ public class PostDto {
      * L'identifiant de l'utilisateur qui a créé le post. Ce champ est utilisé pour lier le post à l'utilisateur qui l'a créé.
      */
     private Long userId;
+
+    private String postUsername;
 }

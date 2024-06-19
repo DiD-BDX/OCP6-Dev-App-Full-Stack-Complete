@@ -3,13 +3,17 @@ package com.openclassrooms.mddapi.services;
 import com.openclassrooms.mddapi.dto.PostDto;
 import com.openclassrooms.mddapi.dto.SubscriptionsDto;
 import com.openclassrooms.mddapi.models.Post;
+import com.openclassrooms.mddapi.models.Topic;
+import com.openclassrooms.mddapi.models.User;
 import com.openclassrooms.mddapi.repository.PostRepository;
+import com.openclassrooms.mddapi.repository.TopicRepository;
 import com.openclassrooms.mddapi.mapper.PostMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,6 +27,12 @@ public class PostService {
     @Autowired
     private SubscriptionService subscriptionService;
 
+    @Autowired
+    private TopicRepository topicRepository;
+
+    @Autowired
+    private UserService userService;
+
     public List<PostDto> getPostsByTopic(Long topicId, Long userId) {
         List<SubscriptionsDto> userSubscriptions = subscriptionService.getSubscriptionsByUserId(userId);
 
@@ -33,7 +43,11 @@ public class PostService {
         }
 
         List<Post> posts = postRepository.findByTopicIdOrderByCreatedAtDesc(topicId);
-        return posts.stream().map(postMapper::toDto).collect(Collectors.toList());
+        return posts.stream().map(post -> {
+            PostDto dto = postMapper.toDto(post);
+            dto.setPostUsername(userService.findUsernameById(post.getUser().getId()));
+            return dto;
+        }).collect(Collectors.toList());
     }
 
     public List<PostDto> getPostsByUserSubscriptions(Long userId) {
@@ -51,13 +65,27 @@ public class PostService {
     }
 
     public PostDto createPost(PostDto postDto) {
-        // Convertir le DTO en entité
-        Post post = postMapper.toEntity(postDto);
+        Topic topic = topicRepository.findById(postDto.getTopicId()).orElseThrow(() -> new NoSuchElementException("Topic avec l'ID " + postDto.getTopicId() + " non trouvé."));
+        User user = userService.findById(postDto.getUserId());
+        if (user == null) {
+            throw new NoSuchElementException("Utilisateur avec l'ID " + postDto.getUserId() + " non trouvé.");
+        }
+
+
+        Post post = new Post();
+        post.setContent(postDto.getContent());
+        post.setCreatedAt(postDto.getCreatedAt());
+        post.setUpdatedAt(postDto.getUpdatedAt());
+        post.setTitle(postDto.getTitle());
+        post.setContent(postDto.getContent());
+        post.setTopic(topic);
+        post.setUser(user);
     
-        // Enregistrer l'entité dans la base de données
         Post savedPost = postRepository.save(post);
-    
-        // Convertir l'entité enregistrée en DTO
-        return postMapper.toDto(savedPost);
+        PostDto savedDto = postMapper.toDto(savedPost);
+        savedDto.setPostUsername(userService.findUsernameById(savedPost.getUser().getId()));
+
+        System.out.println("-------- saved Dto: " + savedDto); 
+        return savedDto;
     }
 }

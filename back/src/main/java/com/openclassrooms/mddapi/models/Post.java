@@ -56,8 +56,9 @@ public class Post {
     /**
      * Le sujet associé au post.
      */
-    @Column(name = "topic_id", nullable = false)
-    private Long topicId;
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "topic_id", nullable = false)
+    private Topic topic;
 
     /**
      * L'utilisateur qui a écrit le post.
@@ -65,6 +66,7 @@ public class Post {
      * @JoinColumn indique que la colonne 'user_id' dans la table 'POST' est une clé étrangère qui fait référence à la colonne 'id' de la table 'USER'.
      * 'nullable = false' signifie que chaque post doit avoir un utilisateur associé ; il ne peut pas être null.
      */
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

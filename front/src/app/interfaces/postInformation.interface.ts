@@ -5,5 +5,6 @@ export interface PostInformation {
     createdAt: Date;
     updatedAt: Date;
     userId: number;
+    postUsername: string;
     topicId: number;
 }

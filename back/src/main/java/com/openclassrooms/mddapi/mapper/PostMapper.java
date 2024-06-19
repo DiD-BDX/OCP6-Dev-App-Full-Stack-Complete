@@ -1,7 +1,6 @@
 package com.openclassrooms.mddapi.mapper;
-
-import org.springframework.stereotype.Component;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import com.openclassrooms.mddapi.dto.PostDto;
 import com.openclassrooms.mddapi.models.Post;
@@ -17,9 +16,14 @@ import com.openclassrooms.mddapi.models.Post;
  * peut être injectée où nécessaire. Elle est également annotée avec {@link Mapper} pour indiquer à MapStruct
  * qu'il s'agit d'un mapper et que MapStruct doit générer une implémentation à la compilation.
  */
-@Component
+
 @Mapper(componentModel = "spring")
-public interface PostMapper extends EntityMapper<PostDto, Post> {
+public interface PostMapper {
+    @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "topic.id", target = "topicId")
     PostDto toDto(Post post);
+
+    @Mapping(source = "userId", target = "user.id")
+    @Mapping(source = "topicId", target = "topic.id")
     Post toEntity(PostDto postDto);
 }
