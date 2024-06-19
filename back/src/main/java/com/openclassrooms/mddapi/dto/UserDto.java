@@ -10,24 +10,22 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 /**
- * Classe représentant un objet de transfert de données (DTO) pour un utilisateur.
- * Cette classe est utilisée pour transférer des données entre le client et le serveur.
- * 
- * @author Didier Barriere Doleac
- * @version 1.0
+ * La classe UserDto est un objet de transfert de données (DTO) pour le transfert de données de User.
+ * Elle est utilisée pour transférer des données entre les couches de l'application.
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
     /**
-     * Identifiant unique de l'utilisateur.
+     * L'identifiant unique de l'utilisateur.
+     * Il correspond à l'identifiant de l'utilisateur dans la base de données.
      */
     private Long id;
 
     /**
-     * Adresse e-mail de l'utilisateur.
-     * Ne peut pas être null et doit être une adresse e-mail valide.
+     * L'adresse e-mail de l'utilisateur.
+     * Ce champ est obligatoire, doit être une adresse e-mail valide et ne peut pas dépasser 100 caractères.
      */
     @NonNull
     @Size(max = 100)
@@ -35,16 +33,16 @@ public class UserDto {
     private String email;
 
     /**
-     * Nom d'utilisateur.
-     * Ne peut pas être null et doit avoir une longueur maximale de 50 caractères.
+     * Le nom d'utilisateur.
+     * Ce champ est obligatoire et ne peut pas dépasser 50 caractères.
      */
     @NonNull
     @Size(max = 50)
     private String username;
 
     /**
-     * Mot de passe de l'utilisateur.
-     * Ignoré lors de la sérialisation JSON et doit avoir une longueur maximale de 50 caractères.
+     * Le mot de passe de l'utilisateur.
+     * Ce champ est ignoré lors de la sérialisation JSON et ne peut pas dépasser 255 caractères.
      */
     @JsonIgnore
     @Size(max = 255)

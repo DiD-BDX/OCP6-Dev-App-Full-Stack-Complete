@@ -8,8 +8,8 @@ import java.util.Date;
 import jakarta.validation.constraints.Max;
 
 /**
- * Classe PostDto utilisée pour le transfert de données entre les différentes couches de l'application.
- * Cette classe est une représentation simplifiée de l'entité Post, utilisée pour exposer uniquement les données nécessaires.
+ * La classe PostDto est un objet de transfert de données (DTO) pour le transfert de données de Post.
+ * Elle est utilisée pour transférer des données entre les couches de l'application.
  */
 @Data
 @Accessors(chain = true)
@@ -19,42 +19,53 @@ import jakarta.validation.constraints.Max;
 public class PostDto {
 
     /**
-     * L'identifiant unique du post. Cet identifiant est généré automatiquement lors de la création d'un nouveau post.
+     * L'identifiant unique du post.
+     * Il correspond à l'identifiant du post dans la base de données.
      */
     private Long id;
 
     /**
-     * Le titre du post. Ce champ est obligatoire et ne peut pas dépasser 70 caractères.
+     * Le titre du post.
+     * Ce champ est obligatoire et ne peut pas dépasser 70 caractères.
      */
     @NonNull
     @Max(70)
     private String title;
 
     /**
-     * Le contenu du post. Ce champ est obligatoire.
+     * Le contenu du post.
+     * Ce champ est obligatoire.
      */
     @NonNull
     private String content;
 
     /**
-     * La date de création du post. Cette date est générée automatiquement lors de la création du post.
+     * La date de création du post.
+     * Elle correspond à la date de création du post dans la base de données.
      */
     private Date createdAt;
 
     /**
-     * La date de dernière mise à jour du post. Cette date est mise à jour automatiquement chaque fois que le post est modifié.
+     * La date de dernière mise à jour du post.
+     * Elle correspond à la date de dernière mise à jour du post dans la base de données.
      */
     private Date updatedAt;
 
     /**
-     * L'identifiant du sujet associé au post. Ce champ est utilisé pour lier le post à un sujet spécifique.
+     * L'identifiant du sujet associé au post.
+     * Il correspond à l'identifiant du sujet associé au post dans la base de données.
      */
     private Long topicId;
 
     /**
-     * L'identifiant de l'utilisateur qui a créé le post. Ce champ est utilisé pour lier le post à l'utilisateur qui l'a créé.
+     * L'identifiant de l'utilisateur qui a créé le post.
+     * Il correspond à l'identifiant de l'utilisateur qui a créé le post dans la base de données.
      */
     private Long userId;
 
+    /**
+     * Le nom d'utilisateur de l'utilisateur qui a créé le post.
+     * Il correspond au nom d'utilisateur de l'utilisateur qui a créé le post dans la base de données.
+     */
     private String postUsername;
 }
