@@ -12,6 +12,7 @@ import { Location } from '@angular/common';
 })
 export class AppComponent {
   isHomePage$: Observable<boolean>;
+  verticalMenuOpen = false;
 
   constructor(
     private authService: AuthService,
@@ -33,6 +34,10 @@ export class AppComponent {
     this.router.navigate([''])
   }
 
+  toggleVerticalMenu() {
+    this.verticalMenuOpen = !this.verticalMenuOpen;
+  }
+  
   goBack(): void {
     this.location.back();
   }

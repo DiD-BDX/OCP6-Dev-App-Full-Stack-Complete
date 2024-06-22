@@ -1,6 +1,6 @@
 <div class="app-not-logged"  *ngIf="!(isHomePage$ | async) && !($isLogged() | async) else Logged">
     <mat-toolbar color="white">
-        <img src="/assets/logo_p6.png" alt="Logo de MDD APP" height="100" width="100">
+        <img src="/assets/logo_p6.png" alt="Logo de MDD APP" height="81" width="140">
         <span class="spacer"></span>
     </mat-toolbar>
     <mat-icon (click)="goBack()">arrow_back</mat-icon>
@@ -10,11 +10,23 @@
        <mat-toolbar color="white" *ngIf="!(isHomePage$ | async) && ($isLogged() | async)">
             <img src="/assets/logo_p6.png" alt="Logo de MDD APP" height="81" width="140">
             <span class="spacer"></span>
-            <a mat-button routerLink="/articles">Articles</a>
-            <a mat-button routerLink="/themes">Thèmes</a>
-            <a routerLink="/me">
-                <mat-icon>account_circle</mat-icon>
-            </a>
+            <div class="HorizontalNav">
+                <a mat-button routerLink="/articles">Articles</a>
+                <a mat-button routerLink="/themes">Thèmes</a>
+                <a routerLink="/me">
+                    <mat-icon>account_circle</mat-icon>
+                </a>
+            </div>
+            <div class="VerticalNav">
+                <mat-icon (click)="toggleVerticalMenu()">menu</mat-icon>
+                <div class="verticalMenu" *ngIf="verticalMenuOpen">
+                    <a mat-button routerLink="/articles">Articles</a>
+                    <a mat-button routerLink="/themes">Thèmes</a>
+                    <a routerLink="/me">
+                        <mat-icon>account_circle</mat-icon>
+                    </a>
+                </div>
+            </div>
         </mat-toolbar>
     </ng-template>
     <router-outlet></router-outlet>

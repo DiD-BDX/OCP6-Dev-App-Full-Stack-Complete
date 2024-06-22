@@ -49,13 +49,71 @@ body {
     height: 94px !important;
     background-color:white !important;
     border-bottom: 1px solid black !important;
-    padding-right: 2em !important;
-    padding-left: 2em !important;
+    padding: 0 !important;
+    //padding-left: 2em !important;
 }
 .mat-toolbar .mat-icon {
     font-size: 40px;
     height: 40px;
     width: 40px;
+}
+
+.HorizontalNav {
+    display: flex;
+    align-items: center; // Assure que tous les éléments sont centrés verticalement
+}
+
+.VerticalNav {
+    display: none;
+}
+
+// Quand l'écran est de 768px ou moins, cache HorizontalNav et affiche VerticalNav
+@media (max-width: 768px) {
+    .HorizontalNav {
+        display: none;
+    }
+
+    .VerticalNav {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative; // Pour positionner le menu vertical par rapport à l'icône de menu
+    }
+}
+
+.verticalMenu {
+    display: flex;
+    flex-direction: column;
+    position: absolute; // Positionne le menu au-dessus des autres contenus
+    top: 100%; // Juste en dessous de l'icône de menu
+    right: 0;
+    width: 140px;
+    padding-right: 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    z-index: 1000; // S'assure que le menu est au-dessus des autres éléments
+    align-items: flex-end; // Aligner les liens à droite
+}
+
+.verticalMenu a {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.HorizontalNav a, .HorizontalNav a mat-icon {
+    display: flex;
+    align-items: center; // Centrer le texte et les icônes verticalement
+    padding: 0; // Ajoute un peu d'espace autour des liens
+    padding-left: 10px;
+}
+
+// Assurez-vous que les icônes sont également centrées si elles ont des styles spécifiques qui les affectent
+.HorizontalNav a mat-icon {
+    height: auto; // Permet à l'icône de s'aligner correctement
+    width: auto; // Garde la taille originale de l'icône sans forcer une largeur spécifique
 }
 
 // Card styles
@@ -87,7 +145,6 @@ body {
 // Themes content styles
 .Themes-content {
     width: 100%;
-    //justify-content: center !important;
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
