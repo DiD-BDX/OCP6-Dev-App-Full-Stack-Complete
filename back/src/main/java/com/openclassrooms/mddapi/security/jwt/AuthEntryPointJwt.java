@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * AuthEntryPointJwt est un composant qui implémente AuthenticationEntryPoint pour gérer les exceptions d'authentification.
+ * {@link AuthEntryPointJwt} est un composant qui implémente {@link AuthenticationEntryPoint} pour gérer les exceptions d'authentification.
  * Il est utilisé pour renvoyer une réponse d'erreur lorsque le client tente d'accéder à une ressource protégée sans authentification valide.
  */
 @Component
@@ -35,6 +35,9 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
      * @param authException l'exception qui a été levée
      * @throws IOException si une erreur d'entrée/sortie se produit lors de l'écriture de la réponse
      * @throws ServletException si la requête ne peut pas être traitée
+     * @see HttpServletRequest
+     * @see HttpServletResponse
+     * @see AuthenticationException
      */
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)

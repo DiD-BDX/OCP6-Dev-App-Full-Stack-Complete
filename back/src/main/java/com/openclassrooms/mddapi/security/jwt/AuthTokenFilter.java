@@ -20,12 +20,18 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.openclassrooms.mddapi.security.services.UserDetailsServiceImpl;
 
 /**
- * AuthTokenFilter est un filtre qui est exécuté une fois par requête pour l'authentification JWT.
+ * {@link AuthTokenFilter} est un filtre qui est exécuté une fois par requête pour l'authentification JWT.
  * Il extrait le token JWT de l'en-tête Authorization de la requête HTTP, valide le token, charge les détails de l'utilisateur associé et définit l'authentification.
+ * 
+ * @see OncePerRequestFilter
  */
 public class AuthTokenFilter extends OncePerRequestFilter {
+
     @Autowired
-    private JwtUtils jwtUtils;
+    private JwtValidator jwtValidator;
+
+    @Autowired
+    private JwtExtractor jwtExtractor;
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
@@ -41,14 +47,18 @@ public class AuthTokenFilter extends OncePerRequestFilter {
      * @param filterChain le chaîne de filtres
      * @throws ServletException si la requête ne peut pas être traitée
      * @throws IOException si une erreur d'entrée/sortie se produit lors de l'écriture de la réponse
+     * 
+     * @see HttpServletRequest
+     * @see HttpServletResponse
+     * @see FilterChain
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
         throws ServletException, IOException {
         try {
             String jwt = parseJwt(request);
-            if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
-                String email = jwtUtils.getEmailFromJwtToken(jwt);
+            if (jwt != null && jwtValidator.validateJwtToken(jwt)) {
+                String email = jwtExtractor.getEmailFromJwtToken(jwt);
     
                 UserDetails userDetails = userDetailsService.loadUserByUsername(email);
                 UsernamePasswordAuthenticationToken authentication =
@@ -72,6 +82,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
      *
      * @param request la requête HTTP
      * @return le token JWT ou null si l'en-tête Authorization est vide ou ne commence pas par "Bearer "
+     * 
+     * @see HttpServletRequest
      */
     private String parseJwt(HttpServletRequest request) {
         String headerAuth = request.getHeader("Authorization");

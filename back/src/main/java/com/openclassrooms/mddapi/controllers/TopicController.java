@@ -10,7 +10,10 @@ import java.util.List;
 
 /**
  * Contrôleur pour les opérations liées aux topics.
+ * <p>
+ * Ce contrôleur gère les requêtes pour obtenir tous les topics.
  * Toutes les méthodes de ce contrôleur sont mappées sur l'URL "/api/topics".
+ * @see com.openclassrooms.mddapi.controllers
  */
 @RestController
 @RequestMapping("/api/topics")
@@ -22,6 +25,7 @@ public class TopicController {
      * Constructeur pour TopicController.
      *
      * @param topicService Le service à utiliser pour les opérations liées aux topics.
+     * @see TopicService
      */
     public TopicController(TopicService topicService) {
         this.topicService = topicService;
@@ -31,6 +35,7 @@ public class TopicController {
      * Récupère la liste de tous les topics.
      *
      * @return Une liste de tous les topics.
+     * @see Topic
      */
     @GetMapping
     public List<Topic> getAllTopics() {

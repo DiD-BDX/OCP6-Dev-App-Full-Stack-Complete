@@ -7,6 +7,9 @@ import jakarta.validation.constraints.NotBlank;
  * <p>
  * Cette classe est utilisée pour transporter les données de connexion d'un utilisateur, 
  * c'est-à-dire son email, son nom d'utilisateur et son mot de passe.
+ * Elle utilise l'annotation {@link NotBlank} pour indiquer que les champs ne peuvent pas être vides.
+ * 
+ * @see NotBlank
  */
 public class LoginRequest {
     
@@ -14,6 +17,9 @@ public class LoginRequest {
      * L'email de l'utilisateur.
      * <p>
      * Ce champ est obligatoire et ne peut pas être vide.
+     * Il utilise l'annotation {@link NotBlank}.
+     * 
+     * @see NotBlank
      */
     @NotBlank
     private String email;
@@ -22,6 +28,9 @@ public class LoginRequest {
      * Le nom d'utilisateur de l'utilisateur.
      * <p>
      * Ce champ est obligatoire et ne peut pas être vide.
+     * Il utilise l'annotation {@link NotBlank}.
+     * 
+     * @see NotBlank
      */
     @NotBlank
     private String username;
@@ -30,12 +39,17 @@ public class LoginRequest {
      * Le mot de passe de l'utilisateur.
      * <p>
      * Ce champ est obligatoire et ne peut pas être vide.
+     * Il utilise l'annotation {@link NotBlank}.
+     * 
+     * @see NotBlank
      */
     @NotBlank
     private String password;
 
     /**
      * Récupère l'email ou le nom d'utilisateur de l'utilisateur.
+     * <p>
+     * Cette méthode renvoie l'email si il est non null, sinon elle renvoie le nom d'utilisateur.
      *
      * @return L'email ou le nom d'utilisateur de l'utilisateur.
      */

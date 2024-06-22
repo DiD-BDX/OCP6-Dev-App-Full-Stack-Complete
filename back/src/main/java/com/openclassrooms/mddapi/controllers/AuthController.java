@@ -29,6 +29,7 @@ import jakarta.validation.Valid;
  * Contrôleur pour les opérations d'authentification.
  * <p>
  * Ce contrôleur gère les requêtes d'authentification et d'inscription.
+ * @see com.openclassrooms.mddapi.controllers
  */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -46,6 +47,10 @@ public class AuthController {
      * @param passwordEncoder L'encodeur de mot de passe.
      * @param jwtUtils L'utilitaire JWT.
      * @param userRepository Le dépôt d'utilisateurs.
+     * @see AuthenticationManager
+     * @see PasswordEncoder
+     * @see JwtUtils
+     * @see UserRepository
      */
     AuthController(AuthenticationManager authenticationManager,
             PasswordEncoder passwordEncoder,
@@ -62,6 +67,8 @@ public class AuthController {
      *
      * @param loginRequest Les détails de la demande de connexion.
      * @return Une réponse contenant le JWT si l'authentification réussit, ou un message d'erreur sinon.
+     * @see LoginRequest
+     * @see ResponseEntity
      */
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -97,6 +104,8 @@ public class AuthController {
      *
      * @param signUpRequest Les détails de la demande d'inscription.
      * @return Une réponse indiquant si l'inscription a réussi ou non.
+     * @see SignupRequest
+     * @see ResponseEntity
      */
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {

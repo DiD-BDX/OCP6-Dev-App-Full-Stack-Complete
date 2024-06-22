@@ -7,24 +7,27 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 /**
- * Repository pour l'entité Topic.
+ * Le {@link Repository} pour les {@link Topic}.
+ * <p>
+ * Cette interface étend {@link JpaRepository} pour fournir des méthodes de gestion de base de données pour les {@link Topic}.
+ * </p>
  */
 @Repository
 public interface TopicRepository extends JpaRepository<Topic, Long> {
 
     /**
-     * Recherche un topic par son titre.
+     * Recherche un {@link Topic} par son nom.
      *
-     * @param name Le titre du topic à rechercher.
-     * @return Un Optional contenant le topic si trouvé, sinon Optional vide.
+     * @param name Le nom du {@link Topic} à rechercher.
+     * @return Un {@link Optional} contenant le {@link Topic} si trouvé, sinon {@link Optional} vide.
      */
     Optional<Topic> findByName(String name);
 
     /**
-     * Vérifie si un topic existe avec le titre spécifié.
+     * Vérifie si un {@link Topic} existe avec le nom spécifié.
      *
-     * @param name Le titre du topic à vérifier.
-     * @return true si un topic avec le titre spécifié existe, sinon false.
+     * @param name Le nom du {@link Topic} à vérifier.
+     * @return true si un {@link Topic} avec le nom spécifié existe, sinon false.
      */
     Boolean existsByName(String name);
 }
