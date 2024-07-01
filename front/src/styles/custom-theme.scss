@@ -15,6 +15,12 @@ body {
     display: flex;
     flex-direction: column;
 }
+
+.responsive-logo {
+    max-width: 80%; /* Permet à l'image de s'adapter à la largeur de son conteneur */
+    height: auto; /* Garde le ratio hauteur/largeur de l'image */
+}
+
 // Form field styles
 .mat-form-field {
     width: 250px;
@@ -49,13 +55,20 @@ body {
     height: 94px !important;
     background-color:white !important;
     border-bottom: 1px solid black !important;
-    padding: 0 !important;
-    //padding-left: 2em !important;
+    position: -webkit-sticky; /* Pour la compatibilité avec Safari */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 .mat-toolbar .mat-icon {
     font-size: 40px;
     height: 40px;
     width: 40px;
+    color: gray;
+}
+
+.mat-toolbar .mat-icon-me {
+    color: mat-color($custom-primary); // Assurez-vous que $primary est défini dans votre thème
 }
 
 .HorizontalNav {
@@ -63,45 +76,7 @@ body {
     align-items: center; // Assure que tous les éléments sont centrés verticalement
 }
 
-.VerticalNav {
-    display: none;
-}
 
-// Quand l'écran est de 768px ou moins, cache HorizontalNav et affiche VerticalNav
-@media (max-width: 768px) {
-    .HorizontalNav {
-        display: none;
-    }
-
-    .VerticalNav {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        position: relative; // Pour positionner le menu vertical par rapport à l'icône de menu
-    }
-}
-
-.verticalMenu {
-    display: flex;
-    flex-direction: column;
-    position: absolute; // Positionne le menu au-dessus des autres contenus
-    top: 100%; // Juste en dessous de l'icône de menu
-    right: 0;
-    width: 140px;
-    padding-right: 10px;
-    background-color: white;
-    border: 1px solid #ccc;
-    z-index: 1000; // S'assure que le menu est au-dessus des autres éléments
-    align-items: flex-end; // Aligner les liens à droite
-}
-
-.verticalMenu a {
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-    &:last-child {
-        border-bottom: none;
-    }
-}
 
 .HorizontalNav a, .HorizontalNav a mat-icon {
     display: flex;
@@ -154,7 +129,6 @@ body {
 .grid-container {
     display: grid;
     justify-items: center;
-    
     margin-left: 3em;
     
 }
@@ -183,7 +157,6 @@ body {
 .card-positioning {
     display: flex;
     flex-direction: column;
-    //height: 100%;
 }
 
 // Content positioning styles
@@ -195,6 +168,138 @@ body {
 
 // Actions positioning styles
 .actions-positioning {
-    width: 100%;
+    //width: 100%;
     height: 40px;
 }
+
+.ArticlesContainer {
+
+        // Card positioning styles
+    .card-positioning {
+        display: flex;
+        flex-direction: column;
+    }
+
+    // Content positioning styles
+    .content-positioning {
+        flex-grow: 1;
+        min-height: 4.5em;
+        margin-left: 1em;
+    }
+    .header-container {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 1em;
+        padding-bottom: 3em;
+        
+    }
+    .left-button {
+        margin-right: auto;
+        margin-left: 1em;
+    }
+    
+    .right-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 2em;
+        margin-left: auto;
+        cursor: pointer;
+    }
+    
+    .right-link .mat-icon {
+        font-size: 40px;
+        height: 40px;
+        width: 40px;
+    }
+    
+    .info-container {
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .date-article, .author-article {
+        margin: 0;
+    }
+    
+    .content-article {
+        margin-top: 1em;
+    }
+}
+
+.full-page-detailArticle {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0 auto;
+    align-items: flex-start;
+
+    .label-article {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+    }
+
+    .ArticlesDetailContainer {
+        width: 100%;
+    }
+
+    .info-container, .comment-blocks {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .info-container {
+        justify-content: left;
+        flex-direction: row;
+        gap: 5em;
+    }
+
+    .grid-container, .card-positioning, .comment-form-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .card-positioning {
+        background-color: white;
+    }
+
+    .left-align {
+        display: block !important;
+    }
+
+    .comment-block-1, .comment-block-2, .comment-form {
+        width: 100%;
+    }
+
+    .comment-block-1-title, .comment-block-2-title, .comment-block-1-content, .comment-block-2-content {
+        padding: 0;
+        flex: 2;
+    }
+
+    .comment-block-1-content {
+        padding: 0.2em 1em;
+        border-radius: 20px;
+        height: 7em;
+        margin-bottom: 1em;
+    }
+
+    .comment-form {
+        margin-right: 1em;
+
+        textarea {
+            height: 4em;
+        }
+    }
+
+    .comment-separator {
+        height: 1em;
+    }
+
+    .rotated-icon {
+        transform: scale(1.5) rotate(-45deg);
+        margin-left: 1em;
+    }
+}
+

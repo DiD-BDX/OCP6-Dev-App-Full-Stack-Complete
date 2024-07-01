@@ -1,0 +1,184 @@
+// CSS pour les mobiles de 835px ou moins
+.VerticalNav {
+    display: none;
+}
+
+.verticalMenu {
+    display: flex;
+    flex-direction: column;
+    position: fixed; // Positionne le menu au-dessus des autres contenus
+    top: 0; // Juste en dessous de l'icône de menu
+    right: 0; // Juste à droite de l'icône de menu
+    width: 140px;
+    padding-right: 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    z-index: 1000; // S'assure que le menu est au-dessus des autres éléments
+    align-items: flex-end; // Aligner les liens à droite
+    height: -webkit-fill-available;
+}
+
+.verticalMenu a {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    &:last-child {
+        margin-top: auto;
+        border-bottom: none;
+    }
+}
+
+@media (max-width: 835px) { // cache HorizontalNav et affiche VerticalNav
+    body {
+        max-width: 99%;
+    }
+    .HorizontalNav {
+        display: none;
+    }
+
+    .VerticalNav {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative; // Pour positionner le menu vertical par rapport à l'icône de menu
+        align-items: flex-end;
+    }
+
+    .Themes-content {
+        width: 80%;
+        display: flex;
+        flex-wrap: nowrap;
+        //justify-content: flex-start;
+    }
+
+    .block2 .Themes-content {
+        width: 80% !important;
+        //justify-content: space-between;
+    }
+    
+    .grid-container {
+        display: grid;
+        justify-items: center;
+        
+        margin-left: 0em;
+        
+    }
+    .block2 .grid-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+    }
+
+    .ArticlesContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .left-button {
+            margin: auto;
+        }
+        
+        .right-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: auto;
+            cursor: pointer;
+        }
+    }
+
+    .ArticlesContainer .header-container{
+        display: flex;
+        flex-direction: column;
+    }
+    
+    /* .full-page-detailArticle {
+        width: -webkit-fill-available;
+    } */
+
+    .full-page-detailArticle .info-container {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center; // Pour aligner verticalement les éléments au centre
+        gap: 10px; // Ajoute un peu d'espace entre les éléments
+    
+        .date-article, .author-article {
+            flex: 1 1 auto;
+            margin-bottom: 0;
+        }
+        .theme-article {
+            flex-basis: 100%; // Force le .theme-article à prendre toute la largeur, le déplaçant ainsi à la ligne suivante
+        }
+        .hr {
+            width: 100%;
+        }
+    }
+
+    .full-page-detailArticle .content-article {
+        overflow-x: auto;
+    }
+
+    .full-page-detailArticle .comment-blocks {
+        margin-bottom: 8em;
+        .mat-card-header {
+            margin-left: 2em;
+            padding-bottom: 0;
+        }
+
+        .mat-card-header .mat-card-title {
+            margin-bottom: 0 !important;
+        }
+
+        .mat-card {
+            margin-top: 0;
+            padding-top: 0;
+        }
+
+        .comment-block-1 {
+            display: flex;
+            flex-direction: column-reverse;
+            max-width: -webkit-fill-available;
+        }
+
+        .comment-block-1-title {
+            display: flex;
+            flex-direction: row-reverse;
+        }
+
+        .comment-block-1-content {
+            
+            min-height: 2em;
+            overflow-x: auto;
+            background-color: white;
+        }
+
+        .comment-block-2 {
+            padding: 0;
+        }
+
+        .comment-block-2-content .comment-form-container {
+            display: flex;
+            align-items: center;
+            border-radius: 15px;
+            border: 1px solid #000000;
+            background-color: white;
+            min-height: 7em;
+            max-height: 8em;
+            position: fixed;
+            margin: 0;
+            width: 99%;
+            bottom: 0;
+            left: 0;
+        }
+
+        .comment-block-2-content .comment-form-container .comment-form .mat-form-field-infix {
+            border: none;
+            margin: 0 10px;
+        }
+        
+        .comment-block-2-button {
+            margin: 0;
+            padding: 0 10px;
+        }
+    }
+}

@@ -22,6 +22,7 @@ export class ArticlesDetailComponent implements OnInit {
   comments: CommentInformation[] = [];
   commentUsername: string = '';
   commentContent: string = '';
+  errorMessage: string = '';
 
   constructor(
     private route: ActivatedRoute, 
@@ -72,6 +73,11 @@ export class ArticlesDetailComponent implements OnInit {
   }
 
   addComment(): void {
+    if (!this.commentContent.trim()) {
+      // Afficher un message d'erreur ou gérer le cas d'un contenu vide
+      console.error('Le contenu du commentaire ne peut pas être vide.');
+      return;
+    }
     const userId = this.sessionService.getSessionInformation().id;
     const postId = +this.id!;
     const comment: CommentInformation = {
