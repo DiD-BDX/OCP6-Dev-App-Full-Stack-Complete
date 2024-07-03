@@ -1,111 +1,65 @@
+// Importation des modules nécessaires depuis Angular et d'autres services
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
-import { FormBuilder, Validators } from '@angular/forms';
-import { SubscriptionService } from 'src/app/services/subscription.service';
-import { SubscriptionInformation } from 'src/app/interfaces/subscriptionInformation.interface';
-import { SessionService } from 'src/app/services/session.service';
-import { PostService } from 'src/app/services/post.service';
-import { PostRequest } from 'src/app/interfaces/postRequest.interface';
-import { PostInformation } from 'src/app/interfaces/postInformation.interface';
+import { Location } from '@angular/common'; // Fournit des méthodes pour naviguer dans l'historique de navigation
+import { FormBuilder, Validators } from '@angular/forms'; // Pour la création et validation de formulaires
+import { SubscriptionService } from 'src/app/services/subscription.service'; // Service personnalisé pour gérer les abonnements
+import { SubscriptionInformation } from 'src/app/interfaces/subscriptionInformation.interface'; // Interface pour les informations d'abonnement
+import { SessionService } from 'src/app/services/session.service'; // Service personnalisé pour gérer les sessions utilisateur
+import { PostService } from 'src/app/services/post.service'; // Service personnalisé pour gérer les publications
 
+// Déclaration du composant avec son sélecteur, son template HTML et ses styles CSS
 @Component({
-  selector: 'app-creation-article',
-  templateUrl: './creation-article.component.html',
-  styleUrls: ['./creation-article.component.scss']
+  selector: 'app-creation-article', // Le sélecteur CSS pour utiliser ce composant
+  templateUrl: './creation-article.component.html', // Le chemin vers le fichier template HTML
+  styleUrls: ['./creation-article.component.scss'] // Le chemin vers le fichier de styles CSS
 })
 export class CreationArticleComponent implements OnInit {
-  public hide = true;
-  public onError = false;
-  public postUsername: string = '';
-  public subscribedTopics: SubscriptionInformation[] = [];
-  public userId = this.sessionService.getSessionInformation().id;
+  // Déclaration des variables du composant
+  public hide = true; // Variable pour contrôler la visibilité d'un élément, par exemple un mot de passe
+  public onError = false; // Variable pour indiquer si une erreur est survenue
+  public postUsername: string = ''; // Variable pour stocker le nom d'utilisateur associé à un post
+  public subscribedTopics: SubscriptionInformation[] = []; // Tableau pour stocker les sujets auxquels l'utilisateur est abonné
+  public userId = this.sessionService.getSessionInformation().id; // Récupère l'ID de l'utilisateur depuis le service de session
 
+  // Initialisation du formulaire avec FormBuilder et validation des champs requis
   public form = this.fb.group({
-    topic: ['', Validators.required],
-    title: ['', Validators.required],
-    content: ['', Validators.required]
+    topic: ['', Validators.required], // Champ pour le sujet, requis
+    title: ['', Validators.required], // Champ pour le titre, requis
+    content: ['', Validators.required] // Champ pour le contenu, requis
   });
 
+  // Constructeur pour injecter les services nécessaires
   constructor(
-    private fb: FormBuilder, 
-    private location: Location, 
-    private subscriptionService: SubscriptionService, 
-    private sessionService: SessionService, 
-    private postService: PostService) {}
+    private fb: FormBuilder, // Injecte FormBuilder pour la gestion du formulaire
+    private location: Location, // Injecte Location pour la navigation
+    private subscriptionService: SubscriptionService, // Injecte le service d'abonnement
+    private sessionService: SessionService, // Injecte le service de session
+    private postService: PostService // Injecte le service de publication
+  ) {}
 
+  // Méthode ngOnInit appelée après l'initialisation du composant
   ngOnInit(): void {
-    this.getSubscribedTopics();
+    this.getSubscribedTopics(); // Appelle la méthode pour récupérer les sujets auxquels l'utilisateur est abonné
   }
 
+  // Méthode pour récupérer les sujets auxquels l'utilisateur est abonné
   getSubscribedTopics(): void {
-    
+    // Appelle le service d'abonnement pour obtenir les sujets abonnés par l'utilisateur
     this.subscriptionService.getSubscribedTopics(this.userId).subscribe((subscriptions: SubscriptionInformation[]) => {
-      this.subscribedTopics = subscriptions;
+      this.subscribedTopics = subscriptions; // Stocke les sujets abonnés dans la variable subscribedTopics
     });
   }
-  submit(): void {
-    const userId = this.sessionService.getSessionInformation().id;
-    const postUsername = this.sessionService.getSessionInformation().username;
-    const topicControl = this.form.get('topic');
-    const createdAt = new Date();
-    const updatedAt = new Date();
-    let topicId: number =0;
-    if (topicControl) {
-      if (topicControl.value !== null) {
-        topicId = +topicControl.value;
-      }
-    }
-
-    const post: PostRequest = {
-      title: this.form.get('title')?.value || '',
-      content: this.form.get('content')?.value || '',
-      postUsername: postUsername,
-      userId: userId,
-      topicId: topicId,
-      createdAt: createdAt,
-      updatedAt: updatedAt
-    };
-
-    this.postService.createPost(userId, topicId, post).subscribe(() => {
-      this.goBack();
-    });
-
-  }
-  /* submit(): void {
-    if (this.form.valid) {
-      const topicControl = this.form.get('topic');
-      console.log(this.form.value);
-      if (topicControl) {
-        let topicId: number =0;
-        if (topicControl.value !== null) {
-          topicId = +topicControl.value;
-        }
-        const title = this.form.get('title')?.value || '';;
-        const content = this.form.get('content')?.value || '';;
-        const userId = this.userId;
-        const postUsername = this.sessionService.getSessionInformation().username;
-        const createdAt = new Date();
-        const updatedAt = new Date();
-        const post: PostRequest = {
-          title: title,
-          content: content,
-          postUsername: postUsername,
-          createdAt: createdAt,
-          updatedAt: updatedAt
-      };
-      console.log("---------post: " + post.title + post.content + post.createdAt + post.updatedAt + post.postUsername);
-      console.log("---------userId: " + userId);
-      console.log("---------topicId: " + topicId);
-      if (topicId !== null) { // Vérifiez si topicId n'est pas null avant de l'envoyer à la méthode createPost
-        this.postService.createPost(userId, topicId, post).subscribe(() => {
-          this.goBack();
-        });
-      }
-      }
-    }
-  } */
   
+  // Méthode pour soumettre le formulaire
+  submit(): void {
+    // Appelle le service de publication pour soumettre le post
+    this.postService.submitPost(this.form).subscribe(() => {
+      this.goBack(); // Navigue vers la page précédente après la soumission
+    });
+  }
+  
+  // Méthode pour naviguer vers la page précédente
   goBack(): void {
-    this.location.back();
+    this.location.back(); // Utilise Location pour naviguer vers l'arrière dans l'historique de navigation
   }
 }

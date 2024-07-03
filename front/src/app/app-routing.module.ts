@@ -18,7 +18,6 @@ const routes: Routes = [
   {
     path: '',
     canActivate: [UnauthGuard],
-    //loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule)
     resolve: { isLogged: SessionResolver },
     component: HomeComponent
   },

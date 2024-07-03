@@ -43,17 +43,4 @@ export class ThemesComponent implements OnInit {
       }
     });
   }
-
-  /* unsubscribeFromTopic(topic: Topic) {
-    this.subscriptionService.unsubscribeUserFromTopic(topic.id, this.userId).subscribe({
-      next: response => {
-        console.log('Désinscription réussie' + response);
-        // Gérer la réponse ici, par exemple afficher un message de succès
-      },
-      error: error => {
-        console.error('Erreur lors de la désinscription du topic :', error);
-        // Gérer l'erreur ici, par exemple afficher un message d'erreur
-      }
-    });
-  } */
 }

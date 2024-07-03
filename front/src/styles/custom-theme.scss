@@ -21,9 +21,22 @@ body {
     height: auto; /* Garde le ratio hauteur/largeur de l'image */
 }
 
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 85vh;
+    width: 100%;
+    position: relative;
+}
+.login h3 {
+    font-size: 16px;
+    margin-bottom: 0em;
+}
+
 // Form field styles
 .mat-form-field {
-    width: 250px;
+    width: 280px;
     .mat-form-field-infix {
         font-size: 16px !important;
         border: 1px solid black;
@@ -37,10 +50,12 @@ body {
             font-size: 16px !important;
             background-color: white !important;
             color: #757575;
+            width: 240px;
         }
 
         input {
             padding-left: 5px;
+            
         }
 
     }

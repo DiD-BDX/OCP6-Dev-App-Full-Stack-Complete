@@ -53,7 +53,18 @@ export function initializeApp(sessionService: SessionService) {
 }
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, MeComponent, NotFoundComponent, LoginComponent, RegisterComponent, ThemesComponent, ArticlesComponent, CreationArticleComponent, ArticlesDetailComponent],
+  declarations: [
+                AppComponent,
+                HomeComponent,
+                MeComponent,
+                NotFoundComponent,
+                LoginComponent,
+                RegisterComponent,
+                ThemesComponent,
+                ArticlesComponent,
+                CreationArticleComponent, 
+                ArticlesDetailComponent
+              ],
   imports: materialModule,
   providers: [
     SessionService,
