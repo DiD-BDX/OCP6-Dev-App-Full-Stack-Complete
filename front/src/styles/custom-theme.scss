@@ -1,0 +1,320 @@
+@import '../../node_modules/@angular/material/theming';
+
+// Core and theme includes
+@include mat-core();
+$custom-primary: mat-palette($mat-indigo);
+$custom-accent:  mat-palette($mat-pink, A200, A100, A400);
+$custom-warn:    mat-palette($mat-red);
+$custom-theme: mat-light-theme($custom-primary, $custom-accent, $custom-warn);
+@include angular-material-theme($custom-theme);
+
+body {
+    max-width: 835px;
+    margin: 0 auto;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+.responsive-logo {
+    max-width: 80%; /* Permet à l'image de s'adapter à la largeur de son conteneur */
+    height: auto; /* Garde le ratio hauteur/largeur de l'image */
+}
+
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 85vh;
+    width: 100%;
+    position: relative;
+}
+.login h3 {
+    font-size: 16px;
+    margin-bottom: 0em;
+}
+
+// Form field styles
+.mat-form-field {
+    width: 280px;
+    .mat-form-field-infix {
+        font-size: 16px !important;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding-top: 17px;
+        padding-left: 5px;
+        background-color: white !important;
+        
+
+        select , input {
+            font-size: 16px !important;
+            background-color: white !important;
+            color: #757575;
+            width: 240px;
+        }
+
+        input {
+            padding-left: 5px;
+            
+        }
+
+    }
+    .mat-form-field-underline {
+        display: none !important;
+    }
+    
+}
+
+// Toolbar styles
+.mat-toolbar {
+    height: 94px !important;
+    background-color:white !important;
+    border-bottom: 1px solid black !important;
+    position: -webkit-sticky; /* Pour la compatibilité avec Safari */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+.mat-toolbar .mat-icon {
+    font-size: 40px;
+    height: 40px;
+    width: 40px;
+    color: gray;
+}
+
+.mat-toolbar .mat-icon-me {
+    color: mat-color($custom-primary); // Assurez-vous que $primary est défini dans votre thème
+}
+
+.HorizontalNav {
+    display: flex;
+    align-items: center; // Assure que tous les éléments sont centrés verticalement
+}
+
+
+
+.HorizontalNav a, .HorizontalNav a mat-icon {
+    display: flex;
+    align-items: center; // Centrer le texte et les icônes verticalement
+    padding: 0; // Ajoute un peu d'espace autour des liens
+    padding-left: 10px;
+}
+
+// Assurez-vous que les icônes sont également centrées si elles ont des styles spécifiques qui les affectent
+.HorizontalNav a mat-icon {
+    height: auto; // Permet à l'icône de s'aligner correctement
+    width: auto; // Garde la taille originale de l'icône sans forcer une largeur spécifique
+}
+
+// Card styles
+.mat-card {
+    box-shadow: none !important;
+    .mat-card-title {
+        font-size: 24px !important;
+        margin-bottom: 2em !important;
+    }
+}
+
+// Button container styles
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+// Header styles
+.app-not-logged mat-icon, .icon-left mat-icon {
+    padding-top: 0.5em;
+    padding-left: 0.7em;
+    font-size: 36px;
+    height: 36px;
+    width: 40px !important;
+    transform: scaleX(1.5);
+}
+
+// Themes content styles
+.Themes-content {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+// Grid container styles
+.grid-container {
+    display: grid;
+    justify-items: center;
+    margin-left: 3em;
+    
+}
+
+// Ellipsis styles
+.ellipsis {
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+// Content spacing styles
+.content-spacing {
+    margin-bottom: 10px;
+}
+
+// Light gray margin top styles
+.lightGray-MarginTop {
+    background-color: rgb(244, 243, 243);
+    margin-top: 1em;
+}
+
+// Card positioning styles
+.card-positioning {
+    display: flex;
+    flex-direction: column;
+}
+
+// Content positioning styles
+.content-positioning {
+    flex-grow: 1;
+    min-height: 4.5em;
+    margin-left: 1em;
+}
+
+// Actions positioning styles
+.actions-positioning {
+    //width: 100%;
+    height: 40px;
+}
+
+.ArticlesContainer {
+
+        // Card positioning styles
+    .card-positioning {
+        display: flex;
+        flex-direction: column;
+    }
+
+    // Content positioning styles
+    .content-positioning {
+        flex-grow: 1;
+        min-height: 4.5em;
+        margin-left: 1em;
+    }
+    .header-container {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 1em;
+        padding-bottom: 3em;
+        
+    }
+    .left-button {
+        margin-right: auto;
+        margin-left: 1em;
+    }
+    
+    .right-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 2em;
+        margin-left: auto;
+        cursor: pointer;
+    }
+    
+    .right-link .mat-icon {
+        font-size: 40px;
+        height: 40px;
+        width: 40px;
+    }
+    
+    .info-container {
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .date-article, .author-article {
+        margin: 0;
+    }
+    
+    .content-article {
+        margin-top: 1em;
+    }
+}
+
+.full-page-detailArticle {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0 auto;
+    align-items: flex-start;
+
+    .label-article {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+    }
+
+    .ArticlesDetailContainer {
+        width: 100%;
+    }
+
+    .info-container, .comment-blocks {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .info-container {
+        justify-content: left;
+        flex-direction: row;
+        gap: 5em;
+    }
+
+    .grid-container, .card-positioning, .comment-form-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .card-positioning {
+        background-color: white;
+    }
+
+    .left-align {
+        display: block !important;
+    }
+
+    .comment-block-1, .comment-block-2, .comment-form {
+        width: 100%;
+    }
+
+    .comment-block-1-title, .comment-block-2-title, .comment-block-1-content, .comment-block-2-content {
+        padding: 0;
+        flex: 2;
+    }
+
+    .comment-block-1-content {
+        padding: 0.2em 1em;
+        border-radius: 20px;
+        height: 7em;
+        margin-bottom: 1em;
+    }
+
+    .comment-form {
+        margin-right: 1em;
+
+        textarea {
+            height: 4em;
+        }
+    }
+
+    .comment-separator {
+        height: 1em;
+    }
+
+    .rotated-icon {
+        transform: scale(1.5) rotate(-45deg);
+        margin-left: 1em;
+    }
+}
+

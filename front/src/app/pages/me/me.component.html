@@ -1,0 +1,52 @@
+<div class="container">
+    <div class="block1">
+            <mat-card>
+                <mat-card-header fxLayoutAlign="center center">
+                    <mat-card-title>Profil utilisateur</mat-card-title>
+                </mat-card-header>
+                <form [formGroup]="profileForm" (ngSubmit)="save()" class="vertical-form">
+                    <mat-card-content fxLayout="column">
+                        <mat-form-field>
+                            <input matInput formControlName="username">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput formControlName="email">
+                        </mat-form-field>
+                    </mat-card-content>
+                    <div class="button-container">
+                        <button mat-raised-button color="primary" type="submit">Sauvegarder</button>
+                    </div>
+                        <div class="logout-button-container" *ngIf="$isLogged() | async">
+                            <!-- <button mat-raised-button color="primary" (click)="logout()" class="link logout-button">Se déconnecter</button> -->
+                            <a href="" (click)="logout()" class="link logout-button">Se déconnecter</a>
+                    </div>
+                
+                </form>
+            </mat-card>
+    </div>
+    <hr>
+    <div class="block2">
+        
+        <mat-card-header fxLayoutAlign="center center">
+            <mat-card-title>Abonnements</mat-card-title>
+        </mat-card-header>
+        
+        <div class="grid-container">   
+            <div class="Themes-content" fxLayout="row wrap" fxLayoutGap="20px" fxLayout.lt-sm="column">
+                <mat-card *ngFor="let subscription of subscribedTopics" fxFlex="47" class="lightGray-MarginTop card-positioning">
+                    <mat-card-header>
+                        <mat-card-title>{{ subscription.topicName }}</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content class="content-positioning">
+                        <p class="ellipsis">{{ subscription.topicDescription }}</p>
+                    </mat-card-content>
+                    <mat-card-actions class="actions-positioning">
+                        <div class="button-container">
+                            <button mat-raised-button color="primary" type="submit" (click)="unsubscribeFromTopic(subscription.topicId)">Se désabonner</button>
+                        </div>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+        </div> 
+    </div>
+</div>

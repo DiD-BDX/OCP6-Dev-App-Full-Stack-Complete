@@ -1,0 +1,21 @@
+.header-App mat-icon {
+    padding-top: 0.5em;
+    padding-left: 0.7em;
+    font-size: 36px;
+    height: 36px;
+    width: 40px !important;
+    transform: scaleX(1.5);
+}
+
+.creationArticle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 85vh;
+    width: 100%;
+    position: relative;
+}
+
+.content-textarea {
+    height: 200px;
+}
