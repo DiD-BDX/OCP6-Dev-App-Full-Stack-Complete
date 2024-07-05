@@ -10,7 +10,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
 import { MeComponent } from './pages/me/me.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
-import { MatCardHeader, MatCardModule } from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -26,8 +26,18 @@ import { ThemesComponent } from './pages/themes/themes.component';
 import { ArticlesComponent } from './pages/articles/articles.component';
 import { CreationArticleComponent } from './pages/creation-article/creation-article.component';
 import { ArticlesDetailComponent } from './pages/articles-detail/articles-detail.component';
+import { SubscriptionService } from './services/subscription.service';
+import { ISubscriptionServiceToken, ITopicServiceToken } from './interfaces/tokens';
 
-const materialModule = [
+// Fonction pour initialiser l'application
+export function initializeApp(sessionService: SessionService) {
+  return (): Promise<any> => { 
+    return sessionService.loadSession();
+  }
+}
+
+// Constante pour les modules Angular Material
+const materialModules = [
   MatButtonModule,
   MatCardModule,
   MatIconModule,
@@ -35,7 +45,11 @@ const materialModule = [
   MatToolbarModule,
   MatFormFieldModule,
   MatInputModule,
-  MatSelectModule,
+  MatSelectModule
+];
+
+// Constante pour les modules Angular de base
+const angularModules = [
   BrowserModule,
   AppRoutingModule,
   BrowserAnimationsModule,
@@ -43,30 +57,29 @@ const materialModule = [
   HttpClientModule,
   ReactiveFormsModule,
   CommonModule,
-  FormsModule,
-]
-
-export function initializeApp(sessionService: SessionService) {
-  return (): Promise<any> => { 
-    return sessionService.loadSession();
-  }
-}
+  FormsModule
+];
 
 @NgModule({
   declarations: [
-                AppComponent,
-                HomeComponent,
-                MeComponent,
-                NotFoundComponent,
-                LoginComponent,
-                RegisterComponent,
-                ThemesComponent,
-                ArticlesComponent,
-                CreationArticleComponent, 
-                ArticlesDetailComponent
-              ],
-  imports: materialModule,
+    AppComponent,
+    HomeComponent,
+    MeComponent,
+    NotFoundComponent,
+    LoginComponent,
+    RegisterComponent,
+    ThemesComponent,
+    ArticlesComponent,
+    CreationArticleComponent, 
+    ArticlesDetailComponent
+  ],
+  imports: [
+    ...materialModules,
+    ...angularModules
+  ],
   providers: [
+    { provide: ITopicServiceToken, useClass: SubscriptionService },
+    { provide: ISubscriptionServiceToken, useClass: SubscriptionService },
     SessionService,
     {
       provide: APP_INITIALIZER,

@@ -1,25 +1,28 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PostInformation } from '../interfaces/postInformation.interface';
 import { PostRequest } from '../interfaces/postRequest.interface';
 import { FormGroup } from '@angular/forms';
 import { SessionService } from './session.service';
+import { HttpService } from './http.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class PostService {
-    constructor(private http: HttpClient, private sessionService: SessionService) { }
+    constructor(private httpService: HttpService, private sessionService: SessionService) { }
 
+    // Utilise le service générique pour les requêtes GET
     getPostsByUserSubscriptions(userId: number): Observable<any> {
-        return this.http.get(`/api/${userId}/posts`);
+        return this.httpService.get<any>(`/api/${userId}/posts`);
     }
 
+    // Utilise le service générique pour les requêtes POST
     createPost(userId: number, topicId: number, post: PostRequest): Observable<PostInformation> {
-        return this.http.post<PostInformation>(`/api/post/create/${userId}/${topicId}`, post);
+        return this.httpService.post<PostInformation>(`/api/post/create/${userId}/${topicId}`, post);
     }
 
+    // Méthode pour soumettre un post à partir d'un formulaire
     submitPost(form: FormGroup): Observable<any> {
         const sessionInfo = this.sessionService.getSessionInformation();
         const userId = sessionInfo.id;
@@ -34,8 +37,7 @@ export class PostService {
             createdAt: new Date(),
             updatedAt: new Date()
         };
-    
+
         return this.createPost(userId, topicId, post);
     }
-
 }
