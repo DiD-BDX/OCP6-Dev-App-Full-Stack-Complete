@@ -14,9 +14,9 @@
     - [Installez Maven (Windows)](#installez-maven-windows)
     - [Demarrer Spring-Boot](#demarrer-spring-boot)
   - [Demarrer le site web (Front-End)](#demarrer-le-site-web-front-end)
-- [4 -](#4--)
-  - [](#)
-  - [](#-1)
+- [4 - Sécurité](#4---sécurité)
+  - [Utilisation du framework Spring Security et de JSON Web Token (JWT)](#utilisation-du-framework-spring-security-et-de-json-web-token-jwt)
+    - [Gestion des tokens et de la sécurité](#gestion-des-tokens-et-de-la-sécurité)
 - [NOTE DE VERSIONS](#note-de-versions)
     - [Angular](#angular)
     - [VERSION DES PACKAGES](#version-des-packages)
@@ -80,12 +80,10 @@ Vous y trouverez 2 sous-dossiers, un pour le Front-End "front" et un pour le Bac
 -  Installez les dependances: `mvn install`
 -  Configurer la base de données dans le fichier `back/src/main/resources/application.properties` 
         
-        Verifiez ces lignes:
-
+Verifiez ces lignes:
         `spring.datasource.url=jdbc:mysql://localhost:3306/ocp6?allowPublicKeyRetrieval=true`
         `spring.datasource.username=root`
         `spring.datasource.password=votre-mot-de-passe`
-        `#Uilise ORM (Object Relational Mapping) pour la gestion des Tables dans la DB`
         `spring.jpa.hibernate.ddl-auto=update`
 - Démarrer l'application: `mvn spring-boot:run`
 
@@ -100,11 +98,21 @@ Vous y trouverez 2 sous-dossiers, un pour le Front-End "front" et un pour le Bac
 >
 > Verifiez que tout fonctionne bien.
 
-# 4 - 
+# 4 - Sécurité
 
-## 
+## Utilisation du framework Spring Security et de JSON Web Token (JWT)
+Le code de `WebSecurityConfig` utilise le design pattern Strategy en encapsulant la logique d'authentification et d'autorisation via JWT dans des composants distincts (AuthTokenFilter, JwtExtractor, JwtValidator). Ces composants sont configurés et intégrés dans le framework Spring Security pour gérer la sécurité de l'application de manière modulaire et interchangeable.
+### Gestion des tokens et de la sécurité
+Dans `application.properties`, vous pouvez configurer les paramètres de sécurité suivants:
 
-## 
+`oc.app.jwtSecret` : la clé secrète utilisée pour signer les tokens JWT.
+`oc.app.jwtExpirationMs` : la durée de validité des tokens JWT en millisecondes.
+
+Pour cette version MVP, la durée de validité des tokens de 24 heures (en ms) est définie par defaut mais non utilisée pour une persistance des tokens entre les sessions.
+Pour modifier cela, ajouter cette ligne dans la configuration de la sécurité dans WebSecurityConfig (methode generateJwtToken):
+
+`.setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))`
+
 
 # NOTE DE VERSIONS
 ### Angular
