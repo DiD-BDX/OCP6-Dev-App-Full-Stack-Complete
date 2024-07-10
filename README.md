@@ -56,7 +56,9 @@ pour gérer et manipuler les bases de données relationnelles).
 # 3 - Demarrer le projet
 ## Cloner le projet en local
 - Naviguez vers le répertoire où vous voulez cloner le dépôt GitHub.
-- Une fois dans le répertoire souhaité, tapez la commande suivante et appuyez sur Entrée: `git clone https://github.com/DiD-BDX/OCP6-Dev-App-Full-Stack-Complete.git`
+- Une fois dans le répertoire souhaité, tapez la commande suivante et appuyez sur Entrée:
+  
+   `git clone https://github.com/DiD-BDX/OCP6-Dev-App-Full-Stack-Complete.git`
 
 Maintenant, le dépôt GitHub devrait être cloné dans un nouveau dossier dans le répertoire actuel. Ce dossier aura le même nom que le dépôt.
 
@@ -81,10 +83,15 @@ Vous y trouverez 2 sous-dossiers, un pour le Front-End "front" et un pour le Bac
 -  Configurer la base de données dans le fichier `back/src/main/resources/application.properties` 
         
 Verifiez ces lignes:
+
         `spring.datasource.url=jdbc:mysql://localhost:3306/ocp6?allowPublicKeyRetrieval=true`
+
         `spring.datasource.username=root`
+
         `spring.datasource.password=votre-mot-de-passe`
+
         `spring.jpa.hibernate.ddl-auto=update`
+
 - Démarrer l'application: `mvn spring-boot:run`
 
 ## Demarrer le site web (Front-End)
@@ -106,6 +113,7 @@ Le code de `WebSecurityConfig` utilise le design pattern Strategy en encapsulant
 Dans `application.properties`, vous pouvez configurer les paramètres de sécurité suivants:
 
 `oc.app.jwtSecret` : la clé secrète utilisée pour signer les tokens JWT.
+
 `oc.app.jwtExpirationMs` : la durée de validité des tokens JWT en millisecondes.
 
 Pour cette version MVP, la durée de validité des tokens de 24 heures (en ms) est définie par defaut mais non utilisée pour une persistance des tokens entre les sessions.
