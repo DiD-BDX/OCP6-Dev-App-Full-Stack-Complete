@@ -12,6 +12,7 @@
   - [Demarrer l'API (Back-End)](#demarrer-lapi-back-end)
     - [Installez Maven (MacOs)](#installez-maven-macos)
     - [Installez Maven (Windows)](#installez-maven-windows)
+    - [Configurez les informations de connexion à la base de données dans des variables d'environnement ainsi que le JWT\_KEY (DB\_USERNAME, DB\_PASSWORD, JWT\_KEY).](#configurez-les-informations-de-connexion-à-la-base-de-données-dans-des-variables-denvironnement-ainsi-que-le-jwt_key-db_username-db_password-jwt_key)
     - [Demarrer Spring-Boot](#demarrer-spring-boot)
   - [Demarrer le site web (Front-End)](#demarrer-le-site-web-front-end)
 - [4 - Sécurité](#4---sécurité)
@@ -76,6 +77,27 @@ Vous y trouverez 2 sous-dossiers, un pour le Front-End "front" et un pour le Bac
 - Une fois Chocolatey installé, vous pouvez installer Maven en exécutant la commande suivante: `choco install maven`
 - Pour vérifier que Maven est bien installé, vous pouvez exécuter la commande suivante : `mvn -v`
 
+### Configurez les informations de connexion à la base de données dans des variables d'environnement ainsi que le JWT_KEY (DB_USERNAME, DB_PASSWORD, JWT_KEY).
+- Pour MacOS, vous pouvez ajouter ces variables dans le fichier `~/.bash_profile` ou `~/.zshrc` en ajoutant ces lignes:
+  
+  ```export DB_USERNAME=root```
+  
+  ```export DB_PASSWORD=votre-mot-de-passe```
+  
+  ```export JWT_KEY=votre-cle-secrete```
+  
+  *(remplacer "votre-mot-de-passe" et "votre-cle-secrete" par vos informations)*
+
+- Pour Windows, vous pouvez ajouter ces variables dans les variables d'environnement du système avec l'invite de commande PowerShell:
+  
+  ```[Environment]::SetEnvironmentVariable("DB_USERNAME", "root", "Machine")```
+  
+  ```[Environment]::SetEnvironmentVariable("DB_PASSWORD", "votre-mot-de-passe", "Machine")```
+  
+  ```[Environment]::SetEnvironmentVariable("JWT_KEY", "votre-cle-secrete", "Machine")```
+  
+  *(remplacer "votre-mot-de-passe" et "votre-cle-secrete" par vos informations)*
+
 ### Demarrer Spring-Boot
 - Ouvrez un terminal (MacOS) ou une invite de commande (Windows).
 - Naviguer vers le répertoire du projet que vous venez de cloner (le repertoire "back").
@@ -86,9 +108,9 @@ Verifiez ces lignes:
 
         `spring.datasource.url=jdbc:mysql://localhost:3306/ocp6?allowPublicKeyRetrieval=true`
 
-        `spring.datasource.username=root`
+        `spring.datasource.username=${DB_USERNAME}`
 
-        `spring.datasource.password=votre-mot-de-passe`
+        `spring.datasource.password=${DB_PASSWORD}`
 
         `spring.jpa.hibernate.ddl-auto=update`
 
@@ -112,9 +134,9 @@ Le code de `WebSecurityConfig` utilise le design pattern Strategy en encapsulant
 ### Gestion des tokens et de la sécurité
 Dans `application.properties`, vous pouvez configurer les paramètres de sécurité suivants:
 
-`oc.app.jwtSecret` : la clé secrète utilisée pour signer les tokens JWT.
+`oc.app.jwtSecret=${JWT_KEY}` : la clé secrète utilisée pour signer les tokens JWT.
 
-`oc.app.jwtExpirationMs` : la durée de validité des tokens JWT en millisecondes.
+`oc.app.jwtExpirationMs=86400000` : la durée de validité des tokens JWT en millisecondes.
 
 Pour cette version MVP, la durée de validité des tokens de 24 heures (en ms) est définie par defaut mais non utilisée pour une persistance des tokens entre les sessions.
 Pour modifier cela, ajouter cette ligne dans la configuration de la sécurité dans WebSecurityConfig (methode generateJwtToken):

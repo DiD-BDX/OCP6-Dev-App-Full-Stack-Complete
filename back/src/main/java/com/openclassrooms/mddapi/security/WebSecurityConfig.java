@@ -31,7 +31,7 @@ import com.openclassrooms.mddapi.security.jwt.AuthTokenFilter;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   
   @Autowired
-  UserDetailsService userDetailsService;
+  private UserDetailsService userDetailsService;
 
   @Autowired
   private AuthenticationEntryPoint unauthorizedHandler;
