@@ -37,7 +37,6 @@ export class PostService {
             createdAt: new Date(),
             updatedAt: new Date()
         };
-
         return this.createPost(userId, topicId, post);
     }
 }

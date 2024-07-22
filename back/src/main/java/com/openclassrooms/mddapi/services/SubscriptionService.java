@@ -5,6 +5,9 @@ import com.openclassrooms.mddapi.models.User;
 import com.openclassrooms.mddapi.models.Topic;
 import com.openclassrooms.mddapi.repository.SubscriptionRepository;
 import com.openclassrooms.mddapi.repository.UserRepository;
+
+import lombok.RequiredArgsConstructor;
+
 import com.openclassrooms.mddapi.repository.TopicRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,24 +20,12 @@ import java.util.List;
  * Service pour gérer les abonnements.
  */
 @Service
+@RequiredArgsConstructor
 public class SubscriptionService {
 
         private final SubscriptionRepository subscriptionRepository;
         private final UserRepository userRepository;
         private final TopicRepository topicRepository;
-
-        /**
-         * Constructeur pour injecter les dépendances.
-         *
-         * @param subscriptionRepository Le repository pour gérer les abonnements.
-         * @param userRepository Le repository pour gérer les utilisateurs.
-         * @param topicRepository Le repository pour gérer les sujets.
-         */
-        public SubscriptionService(SubscriptionRepository subscriptionRepository, UserRepository userRepository, TopicRepository topicRepository) {
-                this.subscriptionRepository = subscriptionRepository;
-                this.userRepository = userRepository;
-                this.topicRepository = topicRepository;
-        }
 
         /**
          * Abonne un utilisateur à un sujet.

@@ -5,6 +5,9 @@ import com.openclassrooms.mddapi.mapper.SubscriptionsMapper;
 import com.openclassrooms.mddapi.models.Subscriptions;
 import com.openclassrooms.mddapi.payload.request.SubscribeRequest;
 import com.openclassrooms.mddapi.services.SubscriptionService;
+
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,20 +21,10 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/api/topics")
+@RequiredArgsConstructor
 public class SubscriptionController {
     private final SubscriptionService subscriptionService;
     private final SubscriptionsMapper subscriptionsMapper;
-
-    /**
-     * Constructeur pour SubscriptionController.
-     *
-     * @param subscriptionService Le service d'abonnement.
-     * @param subscriptionsMapper Le mapper pour les abonnements.
-     */
-    public SubscriptionController(SubscriptionService subscriptionService, SubscriptionsMapper subscriptionsMapper) {
-        this.subscriptionService = subscriptionService;
-        this.subscriptionsMapper = subscriptionsMapper;
-    }
 
     /**
      * Abonne un utilisateur à un sujet.

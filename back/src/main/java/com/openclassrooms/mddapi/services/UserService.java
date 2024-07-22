@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.openclassrooms.mddapi.models.User;
 import com.openclassrooms.mddapi.repository.UserRepository;
 
+import lombok.RequiredArgsConstructor;
+
 /**
  * Service pour gérer les utilisateurs.
  * <p>
@@ -16,18 +18,9 @@ import com.openclassrooms.mddapi.repository.UserRepository;
  * sur les utilisateurs dans la base de données.
  */
 @Service
+@RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-
-    /**
-     * Constructeur pour {@link UserService UserService}.
-     *
-     * @param userRepository Le repository à utiliser pour les opérations sur les utilisateurs.
-     *                       Voir {@link UserRepository UserRepository}.
-     */
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     /**
      * Trouve un utilisateur par son ID.

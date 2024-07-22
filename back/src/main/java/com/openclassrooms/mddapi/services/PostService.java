@@ -1,76 +1,57 @@
 package com.openclassrooms.mddapi.services;
 
-import com.openclassrooms.mddapi.dto.PostDto;
-import com.openclassrooms.mddapi.dto.SubscriptionsDto;
 import com.openclassrooms.mddapi.models.Post;
+import com.openclassrooms.mddapi.models.Subscriptions;
 import com.openclassrooms.mddapi.models.Topic;
 import com.openclassrooms.mddapi.models.User;
 import com.openclassrooms.mddapi.repository.PostRepository;
 import com.openclassrooms.mddapi.repository.TopicRepository;
-import com.openclassrooms.mddapi.mapper.PostMapper;
+
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 /**
- * Service class for managing posts.
+ * Service pour gérer les opérations sur les posts.
  * 
  * @see Post
- * @see PostDto
  * @see PostRepository
- * @see PostMapper
  */
 @Service
+@RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
-    private final PostMapper postMapper;
     private final SubscriptionService subscriptionService;
     private final TopicRepository topicRepository;
     private final UserService userService;
 
     /**
-     * Constructor for PostService.
+     * Obtient les posts par sujet.
      * 
-     * @param postRepository the {@link PostRepository} to use
-     * @param postMapper the {@link PostMapper} to use
-     * @param subscriptionService the {@link SubscriptionService} to use
-     * @param topicRepository the {@link TopicRepository} to use
-     * @param userService the {@link UserService} to use
+     * @param topicId l'ID du sujet
+     * @param userId l'ID de l'utilisateur
+     * @return une liste d'objets {@link Post}
      */
-    public PostService(PostRepository postRepository, PostMapper postMapper, SubscriptionService subscriptionService, TopicRepository topicRepository, UserService userService) {
-        this.postRepository = postRepository;
-        this.postMapper = postMapper;
-        this.subscriptionService = subscriptionService;
-        this.topicRepository = topicRepository;
-        this.userService = userService;
-    }
-
-    /**
-     * Get posts by topic.
-     * 
-     * @param topicId the ID of the topic
-     * @param userId the ID of the user
-     * @return a list of {@link PostDto} objects
-     */
-    public List<PostDto> getPostsByTopic(Long topicId, Long userId) {
+    public List<Post> getPostsByTopic(Long topicId, Long userId) {
         validateUserSubscription(topicId, userId);
-
-        List<Post> posts = postRepository.findByTopicIdOrderByCreatedAtDesc(topicId);
-        return posts.stream().map(this::convertToDto).collect(Collectors.toList());
+        return postRepository.findByTopicIdOrderByCreatedAtDesc(topicId);
     }
 
     /**
-     * Validate user subscription.
+     * Valide l'abonnement de l'utilisateur.
      * 
-     * @param topicId the ID of the topic
-     * @param userId the ID of the user
+     * @param topicId l'ID du sujet
+     * @param userId l'ID de l'utilisateur
+     * @throws RuntimeException si l'utilisateur n'est pas abonné au sujet
      */
-    private void validateUserSubscription(Long topicId, Long userId) {
-        List<SubscriptionsDto> userSubscriptions = subscriptionService.getSubscriptionsByUserId(userId);
-        boolean isSubscribed = userSubscriptions.stream().anyMatch(subscription -> subscription.getTopicId().equals(topicId));
+    private void validateUserSubscription(long topicId, Long userId) {
+        List<Subscriptions> userSubscriptions = subscriptionService.getSubscriptionsByUserId(userId);
+        System.out.println("-------validateUserSubscription----liste des abonnements:  " + userSubscriptions); // Afficher la liste dans la console
+        boolean isSubscribed = userSubscriptions.stream().anyMatch(subscription -> subscription.getTopic().getId().equals(topicId));
 
         if (!isSubscribed) {
             throw new RuntimeException("User is not subscribed to this topic");
@@ -78,66 +59,55 @@ public class PostService {
     }
 
     /**
-     * Convert a {@link Post} object to a {@link PostDto} object.
+     * Obtient les posts par les abonnements d'un utilisateur.
      * 
-     * @param post the {@link Post} object to convert
-     * @return the converted {@link PostDto} object
+     * @param userId l'ID de l'utilisateur
+     * @return une liste d'objets {@link Post}
      */
-    private PostDto convertToDto(Post post) {
-        PostDto dto = postMapper.toDto(post);
-        dto.setPostUsername(userService.findUsernameById(post.getUser().getId()));
-        return dto;
-    }
-
-    /**
-     * Get posts by user subscriptions.
-     * 
-     * @param userId the ID of the user
-     * @return a list of {@link PostDto} objects
-     */
-    public List<PostDto> getPostsByUserSubscriptions(Long userId) {
-        List<SubscriptionsDto> userSubscriptions = subscriptionService.getSubscriptionsByUserId(userId);
-
-        List<PostDto> posts = new ArrayList<>();
-        for (SubscriptionsDto subscription : userSubscriptions) {
-            Long topicId = subscription.getTopicId();
+    public List<Post> getPostsByUserSubscriptions(Long userId) {
+        List<Subscriptions> userSubscriptions = subscriptionService.getSubscriptionsByUserId(userId);
+        List<Post> posts = new ArrayList<>();
+        for (Subscriptions subscription : userSubscriptions) {
+            Long topicId = subscription.getTopic().getId();
             posts.addAll(getPostsByTopic(topicId, userId));
         }
-
         return posts;
     }
 
     /**
-     * Create a post.
+     * Crée un post.
      * 
-     * @param postDto the {@link PostDto} object to create the post from
-     * @return the created {@link PostDto} object
+     * @param post l'objet {@link Post} à créer
+     * @return l'objet {@link Post} créé
      */
-    public PostDto createPost(PostDto postDto) {
-        Topic topic = getTopicById(postDto.getTopicId());
-        User user = getUserById(postDto.getUserId());
+    public Post createPost(Post post) {
+        Topic topic = getTopicById(post.getTopic().getId());
 
-        Post post = createPostFromDto(postDto, topic, user);
-        Post savedPost = postRepository.save(post);
+        User user = getUserById(post.getUser().getId());
 
-        return convertToDto(savedPost);
+        post.setTopic(topic);
+        post.setUser(user);
+        
+        return postRepository.save(post);
     }
 
     /**
-     * Get a topic by ID.
+     * Obtient un sujet par ID.
      * 
-     * @param topicId the ID of the topic
-     * @return the {@link Topic} object
+     * @param topicId l'ID du sujet
+     * @return l'objet {@link Topic}
+     * @throws NoSuchElementException si le sujet n'est pas trouvé
      */
     private Topic getTopicById(Long topicId) {
         return topicRepository.findById(topicId).orElseThrow(() -> new NoSuchElementException("Topic avec l'ID " + topicId + " non trouvé."));
     }
 
     /**
-     * Get a user by ID.
+     * Obtient un utilisateur par ID.
      * 
-     * @param userId the ID of the user
-     * @return the {@link User} object
+     * @param userId l'ID de l'utilisateur
+     * @return l'objet {@link User}
+     * @throws NoSuchElementException si l'utilisateur n'est pas trouvé
      */
     private User getUserById(Long userId) {
         User user = userService.findById(userId);
@@ -145,25 +115,5 @@ public class PostService {
             throw new NoSuchElementException("Utilisateur avec l'ID " + userId + " non trouvé.");
         }
         return user;
-    }
-
-    /**
-     * Create a {@link Post} object from a {@link PostDto} object.
-     * 
-     * @param postDto the {@link PostDto} object to create the post from
-     * @param topic the {@link Topic} object to associate with the post
-     * @param user the {@link User} object to associate with the post
-     * @return the created {@link Post} object
-     */
-    private Post createPostFromDto(PostDto postDto, Topic topic, User user) {
-        Post post = new Post();
-        post.setContent(postDto.getContent());
-        post.setCreatedAt(postDto.getCreatedAt());
-        post.setUpdatedAt(postDto.getUpdatedAt());
-        post.setTitle(postDto.getTitle());
-        post.setContent(postDto.getContent());
-        post.setTopic(topic);
-        post.setUser(user);
-        return post;
     }
 }

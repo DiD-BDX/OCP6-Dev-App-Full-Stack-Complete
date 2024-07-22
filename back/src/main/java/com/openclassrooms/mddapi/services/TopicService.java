@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import com.openclassrooms.mddapi.models.Topic;
 import com.openclassrooms.mddapi.repository.TopicRepository;
 
+import lombok.RequiredArgsConstructor;
+
 /**
  * Service pour gérer les topics.
  * <p>
@@ -16,18 +18,9 @@ import com.openclassrooms.mddapi.repository.TopicRepository;
  * @see TopicRepository
  */
 @Service
+@RequiredArgsConstructor
 public class TopicService {
     private final TopicRepository topicRepository;
-
-    /**
-     * Constructeur pour {@link TopicService TopicService}.
-     *
-     * @param topicRepository Le repository à utiliser pour les opérations sur les topics.
-     * @see TopicRepository
-     */
-    public TopicService(TopicRepository topicRepository) {
-        this.topicRepository = topicRepository;
-    }
 
     /**
      * Trouve un topic par son ID.

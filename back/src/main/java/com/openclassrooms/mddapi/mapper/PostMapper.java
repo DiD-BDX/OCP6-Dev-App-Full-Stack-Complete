@@ -22,7 +22,8 @@ public interface PostMapper {
      */
     @Mapping(source = "user.id", target = "userId")
     @Mapping(source = "topic.id", target = "topicId")
-    @Mapping(target="postUsername", ignore=true)
+    //@Mapping(target="postUsername", ignore=true)
+    @Mapping(target="postUsername", expression="java(post.getUser().getUsername())")
     PostDto toDto(Post post);
 
     /**

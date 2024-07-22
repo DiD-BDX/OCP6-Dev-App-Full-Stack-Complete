@@ -14,6 +14,8 @@ import com.openclassrooms.mddapi.models.User;
 import com.openclassrooms.mddapi.services.AuthenticatedUserService;
 import com.openclassrooms.mddapi.services.UserService;
 
+import lombok.RequiredArgsConstructor;
+
 /**
  * Contrôleur pour gérer les requêtes liées aux utilisateurs.
  * <p>
@@ -27,26 +29,11 @@ import com.openclassrooms.mddapi.services.UserService;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/user")
+@RequiredArgsConstructor
 public class UserController {
     private final UserMapper userMapper;
     private final UserService userService;
     private final AuthenticatedUserService authenticatedUserService;
-
-    /**
-     * Constructeur pour {@link UserController}.
-     *
-     * @param userService Le service à utiliser pour les opérations liées aux utilisateurs.
-     * @param userMapper Le mapper à utiliser pour convertir les utilisateurs en DTOs.
-     * @param authenticatedUserService Le service pour les utilisateurs authentifiés.
-     * @see UserService
-     * @see UserMapper
-     * @see AuthenticatedUserService
-     */
-    public UserController(UserService userService, UserMapper userMapper, AuthenticatedUserService authenticatedUserService) {
-        this.userMapper = userMapper;
-        this.userService = userService;
-        this.authenticatedUserService = authenticatedUserService;
-    }
 
     /**
      * Trouve un utilisateur par son ID.

@@ -1,12 +1,18 @@
 package com.openclassrooms.mddapi.controllers;
 
+import com.openclassrooms.mddapi.dto.TopicDto;
+import com.openclassrooms.mddapi.mapper.TopicMapper;
 import com.openclassrooms.mddapi.models.Topic;
 import com.openclassrooms.mddapi.services.TopicService;
+
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Contrôleur pour les opérations liées aux topics.
@@ -17,19 +23,10 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/topics")
+@RequiredArgsConstructor
 public class TopicController {
-
+    private final TopicMapper topicMapper;
     private final TopicService topicService;
-
-    /**
-     * Constructeur pour TopicController.
-     *
-     * @param topicService Le service à utiliser pour les opérations liées aux topics.
-     * @see TopicService
-     */
-    public TopicController(TopicService topicService) {
-        this.topicService = topicService;
-    }
 
     /**
      * Récupère la liste de tous les topics.
@@ -38,7 +35,10 @@ public class TopicController {
      * @see Topic
      */
     @GetMapping
-    public List<Topic> getAllTopics() {
-        return topicService.getAllTopics();
+    public List<TopicDto> getAllTopics() {
+        List<Topic> topics = topicService.getAllTopics();
+        return topics.stream()
+                        .map(topicMapper::toDto)
+                        .collect(Collectors.toList());
     }
 }

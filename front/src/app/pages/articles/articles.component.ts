@@ -37,6 +37,7 @@ export class ArticlesComponent implements OnInit {
     // Appel du service PostService pour récupérer les articles, puis stockage des articles dans la propriété `articles`
     this.postService.getPostsByUserSubscriptions(userId)
       .subscribe(articles => this.articles = articles);
+      console.log(this.articles);
   }
 
   // Méthode pour trier les articles en fonction de la date
