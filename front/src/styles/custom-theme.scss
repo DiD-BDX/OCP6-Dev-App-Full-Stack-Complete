@@ -155,6 +155,11 @@ body {
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    /* Propriétés standard et autres préfixes */
+    display: box;
+    box-orient: vertical;
+    line-clamp: 5;
 }
 
 // Content spacing styles
@@ -318,3 +323,32 @@ body {
     }
 }
 
+.creationArticlePage {
+    .header-App mat-icon {
+        padding-top: 0.5em;
+        padding-left: 0.7em;
+        font-size: 36px;
+        height: 36px;
+        width: 40px !important;
+        transform: scaleX(1.5);
+    }
+
+    .creationArticle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 85vh;
+        width: 100%;
+        position: relative;
+    }
+
+    .content-textarea {
+        height: 200px;
+    }
+
+    /* .TopicsWindow {
+        width: 100%;
+        margin-top: 200px !important;
+    
+        } */
+}

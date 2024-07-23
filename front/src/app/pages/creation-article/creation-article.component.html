@@ -1,25 +1,27 @@
-<mat-card-header class="header-App">
-    <mat-icon (click)="goBack()">arrow_back</mat-icon>
-</mat-card-header>
-<div class="creationArticle">
-    <form class="creationArticle-form" [formGroup]="form" (ngSubmit)="submit()">
-        <mat-card-content fxLayout="column">
-            <mat-form-field fxFlex>
-                <select matNativeControl formControlName="topic">
-                    <option value="" disabled selected>Sélectionner un thème</option>
-                    <option *ngFor="let topic of subscribedTopics" [value]="topic.topicId">{{topic.topicName}}</option>
-                </select>
-            </mat-form-field>
-            <mat-form-field fxFlex>
-                <input matInput formControlName="title" placeholder="Titre de l'article">
-            </mat-form-field>
-            <mat-form-field fxFlex>
-                <textarea matInput formControlName="content" class="content-textarea" placeholder="Contenu de l'article"></textarea>    
-            </mat-form-field>
-        </mat-card-content>
-        <div class="button-container">
-        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Créer</button>
-        <span *ngIf="onError" class="error ml2">An error occurred</span>
-        </div>
-    </form>
+<div class="creationArticlePage">
+    <mat-card-header class="header-App">
+        <mat-icon (click)="goBack()">arrow_back</mat-icon>
+    </mat-card-header>
+    <div class="creationArticle">
+        <form class="creationArticle-form" [formGroup]="form" (ngSubmit)="submit()">
+            <mat-card-content fxLayout="column">
+                <mat-form-field fxFlex>
+                    <mat-select formControlName="topic" panelClass="TopicsWindow" placeholder="Sélectionner un thème" disableOptionCentering>
+                        <mat-option value="" disabled selected>Sélectionner un thème</mat-option>
+                        <mat-option *ngFor="let topic of subscribedTopics" [value]="topic.topicId">{{topic.topicName}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field fxFlex>
+                    <input matInput formControlName="title" placeholder="Titre de l'article">
+                </mat-form-field>
+                <mat-form-field fxFlex>
+                    <textarea matInput formControlName="content" class="content-textarea" placeholder="Contenu de l'article"></textarea>    
+                </mat-form-field>
+            </mat-card-content>
+            <div class="button-container">
+            <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Créer</button>
+            <span *ngIf="onError" class="error ml2">An error occurred</span>
+            </div>
+        </form>
+    </div>
 </div>
