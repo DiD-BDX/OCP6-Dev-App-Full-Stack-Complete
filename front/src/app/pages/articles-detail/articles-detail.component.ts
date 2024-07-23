@@ -1,15 +1,16 @@
 // Importation des modules nécessaires pour le composant
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router'; // Pour accéder aux paramètres de l'URL
 import { Location } from '@angular/common'; // Pour interagir avec l'historique du navigateur
-// Importation des services et interfaces nécessaires
-import { PostService } from 'src/app/services/post.service';
-import { PostInformation } from 'src/app/interfaces/postInformation.interface';
-import { SessionService } from 'src/app/services/session.service';
-import { SubscriptionInformation } from 'src/app/interfaces/subscriptionInformation.interface';
-import { SubscriptionService } from 'src/app/services/subscription.service';
-import { CommentInformation } from 'src/app/interfaces/commentInformation.interface';
-import { CommentService } from 'src/app/services/comment.service';
+import { PostService } from 'src/app/services/post.service'; // Service pour gérer les articles
+import { PostInformation } from 'src/app/interfaces/postInformation.interface'; // Interface pour les informations d'un article
+import { SessionService } from 'src/app/services/session.service'; // Service pour gérer les sessions utilisateur
+import { SubscriptionInformation } from 'src/app/interfaces/subscriptionInformation.interface'; // Interface pour les informations d'abonnement
+import { SubscriptionService } from 'src/app/services/subscription.service'; // Service pour gérer les abonnements
+import { CommentInformation } from 'src/app/interfaces/commentInformation.interface'; // Interface pour les informations de commentaire
+import { CommentService } from 'src/app/services/comment.service'; // Service pour gérer les commentaires
+import { Subject } from 'rxjs'; // Importation de Subject pour gérer les désabonnements
+import { takeUntil } from 'rxjs/operators'; // Opérateur pour désabonner les observables
 
 // Déclaration du composant avec son sélecteur, template HTML et fichier CSS
 @Component({
@@ -17,7 +18,7 @@ import { CommentService } from 'src/app/services/comment.service';
   templateUrl: './articles-detail.component.html',
   styleUrls: ['./articles-detail.component.scss']
 })
-export class ArticlesDetailComponent implements OnInit {
+export class ArticlesDetailComponent implements OnInit, OnDestroy {
   // Déclaration des variables pour stocker les informations nécessaires
   id: string | null;
   article: PostInformation | null;
@@ -27,6 +28,7 @@ export class ArticlesDetailComponent implements OnInit {
   commentUsername: string = '';
   commentContent: string = '';
   errorMessage: string = '';
+  private destroy$ = new Subject<void>(); // Subject pour notifier la destruction du composant
 
   // Injection des services nécessaires dans le constructeur
   constructor(
@@ -61,14 +63,17 @@ export class ArticlesDetailComponent implements OnInit {
   
     if (this.id) {
       this.postService.getPostsByUserSubscriptions(userId)
+        .pipe(takeUntil(this.destroy$)) // Désabonnement lorsque destroy$ émet une valeur
         .subscribe((articles: PostInformation[]) => {
           const article = articles.find(article => article.id === +this.id!);
           if (article) {
-            this.subscriptionService.getSubscribedTopics(userId).subscribe((topics: SubscriptionInformation[]) => {
-              const topic = topics.find(topic => topic.topicId === article.topicId);
-              this.article = {...article};
-              this.topicName = topic ? topic.topicName : '';
-            });
+            this.subscriptionService.getSubscribedTopics(userId)
+              .pipe(takeUntil(this.destroy$)) // Désabonnement lorsque destroy$ émet une valeur
+              .subscribe((topics: SubscriptionInformation[]) => {
+                const topic = topics.find(topic => topic.topicId === article.topicId);
+                this.article = {...article};
+                this.topicName = topic ? topic.topicName : '';
+              });
           } else {
             this.article = null;
           }
@@ -79,6 +84,7 @@ export class ArticlesDetailComponent implements OnInit {
   // Méthode pour récupérer les commentaires d'un article
   getCommentsByPostId(postId: number): void {
     this.commentService.getCommentsByPostId(postId)
+      .pipe(takeUntil(this.destroy$)) // Désabonnement lorsque destroy$ émet une valeur
       .subscribe((comments: CommentInformation[]) => {
         this.comments = comments;
       });
@@ -102,6 +108,7 @@ export class ArticlesDetailComponent implements OnInit {
     };
 
     this.commentService.createComment(postId, comment)
+      .pipe(takeUntil(this.destroy$)) // Désabonnement lorsque destroy$ émet une valeur
       .subscribe((comment: CommentInformation) => {
         this.comments.push(comment);
         this.commentUsername = '';
@@ -112,5 +119,11 @@ export class ArticlesDetailComponent implements OnInit {
   // Méthode pour revenir à la page précédente
   goBack(): void {
     this.location.back();
+  }
+
+  // Méthode appelée à la destruction du composant pour désabonner les observables
+  ngOnDestroy(): void {
+    this.destroy$.next(); // Émet une valeur pour notifier la destruction
+    this.destroy$.complete(); // Complète le Subject
   }
 }
