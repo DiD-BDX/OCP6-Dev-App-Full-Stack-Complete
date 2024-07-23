@@ -1,98 +1,48 @@
 package com.openclassrooms.mddapi.controllers;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.openclassrooms.mddapi.exception.EmailAlreadyTakenException;
+import com.openclassrooms.mddapi.exception.InvalidCredentialsException;
 import com.openclassrooms.mddapi.models.User;
 import com.openclassrooms.mddapi.payload.request.LoginRequest;
 import com.openclassrooms.mddapi.payload.request.SignupRequest;
 import com.openclassrooms.mddapi.payload.response.JwtResponse;
 import com.openclassrooms.mddapi.payload.response.MessageResponse;
-import com.openclassrooms.mddapi.repository.UserRepository;
-import com.openclassrooms.mddapi.security.jwt.JwtUtils;
 import com.openclassrooms.mddapi.security.services.UserDetailsImpl;
+import com.openclassrooms.mddapi.services.AuthService;
 
 import jakarta.validation.Valid;
 
-/**
- * Contrôleur pour les opérations d'authentification.
- * <p>
- * Ce contrôleur gère les requêtes d'authentification et d'inscription.
- * @see com.openclassrooms.mddapi.controllers
- */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    private final AuthenticationManager authenticationManager;
-    private final JwtUtils jwtUtils;
-    private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
+
+    @Autowired
+    private AuthService authService;
 
     /**
-     * Constructeur pour AuthController.
+     * Authenticates a user based on the provided login request.
      *
-     * @param authenticationManager Le gestionnaire d'authentification.
-     * @param passwordEncoder L'encodeur de mot de passe.
-     * @param jwtUtils L'utilitaire JWT.
-     * @param userRepository Le dépôt d'utilisateurs.
-     * @see AuthenticationManager
-     * @see PasswordEncoder
-     * @see JwtUtils
-     * @see UserRepository
-     */
-    AuthController(AuthenticationManager authenticationManager,
-            PasswordEncoder passwordEncoder,
-            JwtUtils jwtUtils,
-            UserRepository userRepository) {
-        this.authenticationManager = authenticationManager;
-        this.jwtUtils = jwtUtils;
-        this.passwordEncoder = passwordEncoder;
-        this.userRepository = userRepository;
-    }
-
-    /**
-     * Authentifie un utilisateur.
-     *
-     * @param loginRequest Les détails de la demande de connexion.
-     * @return Une réponse contenant le JWT si l'authentification réussit, ou un message d'erreur sinon.
-     * @see LoginRequest
-     * @see ResponseEntity
+     * @param loginRequest the login request containing the user's credentials
+     * @return a ResponseEntity containing a JwtResponse with the JWT token and user details
+     * @throws InvalidCredentialsException if the email or username is invalid
      */
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-
-        // Tentez d'authentifier l'utilisateur avec l'email ou le nom d'utilisateur et le mot de passe fournis
-    Authentication authentication;
-    try {
-        // Essayez d'authentifier avec l'email
-        authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-    } catch (BadCredentialsException e) {
-        // Si l'authentification par email échoue, essayez avec le nom d'utilisateur
-        authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-    }
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
+        User user = getUserFromRequest(loginRequest);
+        Authentication authentication = authService.authenticate(user.getEmail(), loginRequest.getPassword());
+        String jwt = authService.generateJwtToken(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        // Recherchez l'utilisateur par email ou nom d'utilisateur
-        User user = this.userRepository.findByEmailOrUsername(userDetails.getEmail(), userDetails.getUsername()).orElse(null);
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
-        }
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
@@ -100,28 +50,42 @@ public class AuthController {
     }
 
     /**
-     * Inscrit un nouvel utilisateur.
+     * Registers a new user based on the provided signup request.
      *
-     * @param signUpRequest Les détails de la demande d'inscription.
-     * @return Une réponse indiquant si l'inscription a réussi ou non.
-     * @see SignupRequest
-     * @see ResponseEntity
+     * @param signUpRequest the signup request containing the user's details
+     * @return a ResponseEntity containing a MessageResponse indicating successful registration
+     * @throws EmailAlreadyTakenException if the email is already taken
      */
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Email is already taken!"));
+        if (authService.existsByEmail(signUpRequest.getEmail())) {
+            throw new EmailAlreadyTakenException("Error: Email is already taken!");
         }
 
-        
         User user = new User(signUpRequest.getEmail(),
                 signUpRequest.getUsername(),
-                passwordEncoder.encode(signUpRequest.getPassword()));
+                authService.encodePassword(signUpRequest.getPassword()));
 
-        userRepository.save(user);
+        authService.saveUser(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    /**
+     * Retrieves a user based on the provided login request.
+     *
+     * @param loginRequest the login request containing the user's email or username
+     * @return the User object corresponding to the provided email or username
+     * @throws InvalidCredentialsException if the email or username is invalid
+     */
+    private User getUserFromRequest(LoginRequest loginRequest) {
+        User user = null;
+        if (loginRequest.getEmailOrUsername() != null && !loginRequest.getEmailOrUsername().isEmpty()) {
+            user = authService.findUserByEmailOrUsername(loginRequest.getEmailOrUsername(), loginRequest.getEmailOrUsername());
+        }
+        if (user == null) {
+            throw new InvalidCredentialsException("Invalid email or username");
+        }
+        return user;
     }
 }

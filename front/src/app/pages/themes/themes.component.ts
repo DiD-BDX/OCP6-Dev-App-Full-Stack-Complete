@@ -1,4 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Topic } from 'src/app/interfaces/topicInformation.interface';
 import { SessionService } from 'src/app/services/session.service';
 import { ISubscriptionService } from 'src/app/interfaces/subscription.service.interface';
@@ -10,9 +12,10 @@ import { ISubscriptionServiceToken, ITopicServiceToken } from 'src/app/interface
   templateUrl: './themes.component.html', // Chemin vers le template HTML du composant
   styleUrls: ['./themes.component.scss'] // Chemin vers les styles CSS du composant
 })
-export class ThemesComponent implements OnInit {
+export class ThemesComponent implements OnInit, OnDestroy {
   topics: Topic[]; // Propriété pour stocker la liste des topics
   userId: number; // Propriété pour stocker l'ID de l'utilisateur
+  private destroy$ = new Subject<void>(); // Subject utilisé pour gérer la destruction des observables
 
   // Le constructeur injecte les services nécessaires
   constructor(
@@ -26,27 +29,40 @@ export class ThemesComponent implements OnInit {
 
   // Méthode appelée lors de l'initialisation du composant
   ngOnInit(): void {
+    console.log('-----------ngOnInit called-----------');
     // Appel au service pour récupérer les topics
-    this.topicService.getTopics().subscribe({
-      next: data => {
-        this.topics = data; // Mise à jour de la liste des topics avec les données reçues
-      },
-      error: error => {
-        console.error('Erreur lors de la récupération des topics :', error); // Gestion des erreurs
-      }
-    });
+    this.topicService.getTopics()
+      .pipe(takeUntil(this.destroy$)) // Utilisation de takeUntil pour désinscrire l'observable
+      .subscribe({
+        next: data => {
+          console.log('Topics received:', data);
+          this.topics = data; // Mise à jour de la liste des topics avec les données reçues
+        },
+        error: error => {
+          console.error('Erreur lors de la récupération des topics :', error); // Gestion des erreurs
+        }
+      });
   }
 
   // Méthode pour souscrire à un topic
   subscribeToTopic(topic: Topic) {
     // Appel au service de souscription avec l'ID du topic et de l'utilisateur
-    this.subscriptionService.subscribeUserToTopic(topic.id, this.userId).subscribe({
-      next: response => {
-        console.log('Souscription réussie' + response); // Log en cas de succès
-      },
-      error: error => {
-        console.error('Erreur lors de la souscription au topic :', error); // Gestion des erreurs
-      }
-    });
+    this.subscriptionService.subscribeUserToTopic(topic.id, this.userId)
+      .pipe(takeUntil(this.destroy$)) // Utilisation de takeUntil pour désinscrire l'observable
+      .subscribe({
+        next: response => {
+          console.log('Souscription réussie' + response); // Log en cas de succès
+        },
+        error: error => {
+          console.error('Erreur lors de la souscription au topic :', error); // Gestion des erreurs
+        }
+      });
+  }
+
+  // Méthode appelée lors de la destruction du composant
+  ngOnDestroy(): void {
+    console.log('ngOnDestroy called');
+    this.destroy$.next(); // Émission d'un signal pour désinscrire tous les observables
+    this.destroy$.complete(); // Complétion du Subject
   }
 }

@@ -1,17 +1,19 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { SessionInformation } from '../interfaces/sessionInformation.interface';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { HttpService } from './http.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SessionService {
+export class SessionService implements OnDestroy {
   public isLogged = false;
   public sessionInformation: SessionInformation | undefined;
 
   private isLoggedSubject = new BehaviorSubject<boolean>(this.hasToken());
+  private destroy$ = new Subject<void>();
 
   // Clés de stockage local
   private readonly AUTH_TOKEN_KEY = 'authToken';
@@ -42,7 +44,7 @@ export class SessionService {
 
   // Retourne un Observable indiquant si l'utilisateur est connecté
   public $isLogged(): Observable<boolean> {
-    return this.isLoggedSubject.asObservable();
+    return this.isLoggedSubject.asObservable().pipe(takeUntil(this.destroy$));
   }
 
   // Connecte l'utilisateur et met à jour le stockage local
@@ -79,7 +81,15 @@ export class SessionService {
       tap(updatedSessionInformation => {
         this.sessionInformation = updatedSessionInformation;
         localStorage.setItem(this.SESSION_INFO_KEY, JSON.stringify(updatedSessionInformation));
-      })
+      }),
+      takeUntil(this.destroy$)
     );
+  }
+
+  // Méthode appelée à la fin de vie du composant
+  // Complète le Subject pour désabonner tous les observables
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
