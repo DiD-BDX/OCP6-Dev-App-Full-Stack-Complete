@@ -5,7 +5,8 @@ import { SubscriptionService } from 'src/app/services/subscription.service'; // 
 import { SubscriptionInformation } from 'src/app/interfaces/subscriptionInformation.interface'; // Interface pour les informations d'abonnement
 import { SessionService } from 'src/app/services/session.service'; // Service personnalisé pour gérer les sessions utilisateur
 import { PostService } from 'src/app/services/post.service'; // Service personnalisé pour gérer les publications
-import { Subscription } from 'rxjs'; // Importation de Subscription depuis rxjs
+import { Subject } from 'rxjs'; // Importation de Subject depuis rxjs
+import { takeUntil } from 'rxjs/operators'; // Importation de takeUntil depuis rxjs
 
 @Component({
   selector: 'app-creation-article', // Le sélecteur CSS pour utiliser ce composant
@@ -26,8 +27,8 @@ export class CreationArticleComponent implements OnInit, OnDestroy {
     content: ['', Validators.required] // Champ pour le contenu, requis
   });
 
-  // Propriété pour stocker les abonnements
-  private subscriptions: Subscription = new Subscription();
+  // Subject pour gérer la désinscription des observables
+  private destroy$ = new Subject<void>();
 
   // Constructeur pour injecter les services nécessaires
   constructor(
@@ -45,20 +46,22 @@ export class CreationArticleComponent implements OnInit, OnDestroy {
 
   // Méthode pour récupérer les sujets auxquels l'utilisateur est abonné
   getSubscribedTopics(): void {
-    // Ajoute l'abonnement à la liste des abonnements
-    const subscription = this.subscriptionService.getSubscribedTopics(this.userId).subscribe((subscriptions: SubscriptionInformation[]) => {
+    // Utilisation de takeUntil pour désinscrire l'observable
+    this.subscriptionService.getSubscribedTopics(this.userId).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe((subscriptions: SubscriptionInformation[]) => {
       this.subscribedTopics = subscriptions; // Stocke les sujets abonnés dans la variable subscribedTopics
     });
-    this.subscriptions.add(subscription);
   }
 
   // Méthode pour soumettre le formulaire
   submit(): void {
-    // Ajoute l'abonnement à la liste des abonnements
-    const subscription = this.postService.submitPost(this.form).subscribe(() => {
+    // Utilisation de takeUntil pour désinscrire l'observable
+    this.postService.submitPost(this.form).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
       this.goBack(); // Navigue vers la page précédente après la soumission
     });
-    this.subscriptions.add(subscription);
   }
 
   // Méthode pour naviguer vers la page précédente
@@ -68,7 +71,7 @@ export class CreationArticleComponent implements OnInit, OnDestroy {
 
   // Méthode ngOnDestroy appelée avant la destruction du composant
   ngOnDestroy(): void {
-    // Désabonne tous les abonnements pour éviter les fuites de mémoire
-    this.subscriptions.unsubscribe();
+    this.destroy$.next(); // Émission d'un signal pour désinscrire tous les observables
+    this.destroy$.complete(); // Complétion du Subject
   }
 }

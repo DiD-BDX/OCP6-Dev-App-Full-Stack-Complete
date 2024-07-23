@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
-import { Observable, catchError, of, tap } from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Observable, Subject, catchError, of, tap } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { HttpParams } from '@angular/common/http';
 import { Topic } from '../interfaces/topicInformation.interface';
 import { SubscriptionInformation } from '../interfaces/subscriptionInformation.interface';
@@ -10,7 +11,8 @@ import { HttpService } from './http.service'; // Import HttpService
 @Injectable({
     providedIn: 'root'
 })
-export class SubscriptionService implements ITopicService, ISubscriptionService {
+export class SubscriptionService implements ITopicService, ISubscriptionService, OnDestroy {
+    private destroy$ = new Subject<void>();
 
     constructor(private httpService: HttpService) { } // Use HttpService instead of HttpClient
 
@@ -26,7 +28,8 @@ export class SubscriptionService implements ITopicService, ISubscriptionService 
                 } else {
                     throw error;
                 }
-            })
+            }),
+            takeUntil(this.destroy$) // Unsubscribe when destroy$ emits
         );
     }
 
@@ -39,17 +42,29 @@ export class SubscriptionService implements ITopicService, ISubscriptionService 
             }),
             catchError(error => {
                 throw error;
-            })
+            }),
+            takeUntil(this.destroy$) // Unsubscribe when destroy$ emits
         );
     }
 
     // Method to get subscribed topics for a user
     getSubscribedTopics(userId: number): Observable<SubscriptionInformation[]> {
-        return this.httpService.get<SubscriptionInformation[]>(`/api/topics/${userId}/subscriptions`);
+        return this.httpService.get<SubscriptionInformation[]>(`/api/topics/${userId}/subscriptions`).pipe(
+            takeUntil(this.destroy$) // Unsubscribe when destroy$ emits
+        );
     }
 
     // Method to get all topics
     getTopics(): Observable<Topic[]> {
-        return this.httpService.get<Topic[]>('/api/topics');
+        return this.httpService.get<Topic[]>('/api/topics').pipe(
+            takeUntil(this.destroy$) // Unsubscribe when destroy$ emits
+        );
+    }
+
+    // Method called at the end of the component's lifecycle
+    // Completes the Subject to unsubscribe all observables
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }
