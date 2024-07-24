@@ -29,7 +29,6 @@ export class ThemesComponent implements OnInit, OnDestroy {
 
   // Méthode appelée lors de l'initialisation du composant
   ngOnInit(): void {
-    console.log('-----------ngOnInit called-----------');
     // Appel au service pour récupérer les topics
     this.topicService.getTopics()
       .pipe(takeUntil(this.destroy$)) // Utilisation de takeUntil pour désinscrire l'observable
@@ -61,7 +60,6 @@ export class ThemesComponent implements OnInit, OnDestroy {
 
   // Méthode appelée lors de la destruction du composant
   ngOnDestroy(): void {
-    console.log('ngOnDestroy called');
     this.destroy$.next(); // Émission d'un signal pour désinscrire tous les observables
     this.destroy$.complete(); // Complétion du Subject
   }

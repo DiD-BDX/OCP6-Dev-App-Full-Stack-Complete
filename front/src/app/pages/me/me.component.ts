@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 
 import { SessionInformation } from 'src/app/interfaces/sessionInformation.interface';
 import { SubscriptionInformation } from 'src/app/interfaces/subscriptionInformation.interface';
@@ -33,6 +33,7 @@ export class MeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    console.log('-----------ngOnInit called-----------');
     this.initializeComponent(); // Initialisation du composant
   }
 
@@ -105,7 +106,10 @@ export class MeComponent implements OnInit, OnDestroy {
       email: this.profileForm.value.email ?? ''
     };
     this.sessionService.updateSessionInformation(updatedSessionInformation)
-      .pipe(takeUntil(this.destroy$)) // Utilisation de takeUntil pour gérer la désinscription
+      .pipe(
+        takeUntil(this.destroy$), // Utilisation de takeUntil pour gérer la désinscription
+        tap(() => this.logout()) // Déconnexion de l'utilisateur
+      )
       .subscribe({
         next: this.handleUpdateSessionInformationResponse.bind(this), // Gestion de la réponse en cas de succès
         error: this.handleError.bind(this, 'Erreur lors de la mise à jour des informations de session') // Gestion de l'erreur
@@ -143,5 +147,6 @@ export class MeComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next(); // Émission d'une valeur pour notifier la destruction
     this.destroy$.complete(); // Fermeture du Subject
+    console.log('ngOnDestroy called');
   }
 }
