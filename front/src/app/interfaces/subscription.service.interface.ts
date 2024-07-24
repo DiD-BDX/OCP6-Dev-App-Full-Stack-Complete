@@ -1,4 +1,5 @@
 import { Observable } from "rxjs"; // Importation de la classe Observable depuis RxJS
+import { SubscriptionActionResult } from "./subscriptionActionResult.interface";
 
 // Interface ISubscriptionService définissant un contrat pour les services de souscription
 export interface ISubscriptionService {
@@ -8,5 +9,5 @@ export interface ISubscriptionService {
      * @param userId - ID de l'utilisateur.
      * @returns Un Observable émettant la réponse de la souscription.
      */
-    subscribeUserToTopic(topicId: number, userId: number): Observable<any>;
+    subscribeUserToTopic(topicId: number, userId: number): Observable<SubscriptionActionResult>;
 }
